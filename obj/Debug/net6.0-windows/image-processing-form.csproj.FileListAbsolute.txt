@@ -1,0 +1,16 @@
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\bin\Debug\net6.0-windows\image-processing-form.exe
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\bin\Debug\net6.0-windows\image-processing-form.deps.json
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\bin\Debug\net6.0-windows\image-processing-form.runtimeconfig.json
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\bin\Debug\net6.0-windows\image-processing-form.dll
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\bin\Debug\net6.0-windows\image-processing-form.pdb
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\image_processing_form.Form1.resources
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\image-processing-form.csproj.GenerateResource.cache
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\image-processing-form.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\image-processing-form.AssemblyInfoInputs.cache
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\image-processing-form.AssemblyInfo.cs
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\image-processing-form.csproj.CoreCompileInputs.cache
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\image-processing-form.dll
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\refint\image-processing-form.dll
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\image-processing-form.pdb
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\image-processing-form.genruntimeconfig.cache
+C:\Users\raylaw\Desktop\Code\Csh\image-processing-form\obj\Debug\net6.0-windows\ref\image-processing-form.dll
