@@ -1,3 +1,4 @@
+using System.Diagnostics.Metrics;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -6,24 +7,43 @@ namespace image_processing_form
     public partial class Form1 : Form
     {
 
-        Bitmap image = new Bitmap("image_2.jpg");
-        Bitmap image2 = new Bitmap("image.jpg");
-        // PictureBox üzerinde kýrpma yapýlacak alaný temsil eden dikdörtgenin boyutu ve konumu
-        Point pDown = Point.Empty;
-        Rectangle rect = Rectangle.Empty;
+        // Boolean state variables
         bool isAltKeyPressed = false;
         bool isCropMode = false;
         bool isZoomMode = false;
-        Image imageBeforeZoomMode = null;
+        bool isBrightnessMode = false;
+        bool isContrastMode = false;
+        bool isBlackWhiteMode = false;
+        bool isMakeGrayMode = false;
+        bool isBinarizeMode = false;
+        bool isShifterMode = false;
+
+        Bitmap image = new Bitmap("image_2.jpg");
+        //Bitmap image2 = new Bitmap("image.jpg");
+        // PictureBox üzerinde kýrpma yapýlacak alaný temsil eden dikdörtgenin boyutu ve konumu
+        Point pDown = Point.Empty;
+        Rectangle rect = Rectangle.Empty;
+
+        // Daha sonra ekleyeceðim kaydet butonuna basýlmadan görselin 
+        // kaydedilmemesi için bir deðiþken
+        Image imageBeforeMode = null;
+
         public Form1()
         {
             InitializeComponent();
+
+            imageBeforeMode = image;
 
             /// -SÝLME- Loglarýn düzgün çalýþmasý için gerkeli!
             Logger logger = new Logger();
 
             /// -SÝLME- Zoom özelliðinin akýcýlýðý için gerekli!
             this.DoubleBuffered = true;
+
+            /// -SÝLME- Undo iþlemi için gerekli!
+            ImgProcess.processedImages.Add(image);
+            undoBtn.Enabled = false;
+
 
             trackBar1.Minimum = 1;
             trackBar1.Maximum = 600;
@@ -32,7 +52,7 @@ namespace image_processing_form
             trackBar1.UseWaitCursor = false;
             trackBar1.Visible = false;
 
-            
+
             pictureBox.MouseWheel += PictureBox_MouseWheel;
 
             int width = image.Width;
@@ -41,18 +61,18 @@ namespace image_processing_form
 
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox.Image = image;
-            //Shifter();
+            //ImgProcess.Shifter(pictureBox, ref image, 2000, 1800);
             //ImgProcess.Brightness(pictureBox, ref image, 100);
             //ImgProcess.BlackWhite(pictureBox, ref image);
-            //Contrast(50);
-            //MakeGray();
-            //Binarize(100);
+            //ImgProcess.Contrast(pictureBox, ref image, 50);
+            //ImgProcess.MakeGray(pictureBox, ref image);
+            //ImgProcess.Binarize(pictureBox, ref image, 100);
             //EqualImageDimensionsAndPreventStrecthing(image2, image);
             //EqualImageDimensions(ref image2, ref image);
-             //MultiplyImages(image, image);
+            //MultiplyImages(image, image);
         }
 
-        
+
         private void PictureBox_MouseWheel(object? sender, MouseEventArgs e)
         {
             // Check if Alt key is pressed and mouse wheel is scrolled down
@@ -130,125 +150,6 @@ namespace image_processing_form
             pictureBox.Image = image2;
         }
 
-        public void Binarize(int threshold)
-        {
-            Bitmap temp = (Bitmap)image;
-            Bitmap bmap = (Bitmap)temp.Clone();
-            Color c;
-            for (int i = 0; i < bmap.Width; i++)
-            {
-                for (int j = 0; j < bmap.Height; j++)
-                {
-                    c = bmap.GetPixel(i, j);
-                    int r = c.R;
-                    int g = c.G;
-                    int b = c.B;
-                    int avg = (r + g + b) / 3;
-                    if (avg > threshold)
-                        bmap.SetPixel(i, j, Color.White);
-                    else
-                        bmap.SetPixel(i, j, Color.Black);
-                }
-            }
-            pictureBox.Image = bmap;
-        }
-
-        public void MakeGray()
-        {
-            Bitmap temp = (Bitmap)image;
-            Bitmap bmap = (Bitmap)temp.Clone();
-            Color c;
-            for (int i = 0; i < bmap.Width; i++)
-            {
-                for (int j = 0; j < bmap.Height; j++)
-                {
-                    c = bmap.GetPixel(i, j);
-                    byte gray = (byte)(.299 * c.R + .587 * c.G + .114 * c.B);
-                    bmap.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
-                }
-            }
-            pictureBox.Image = bmap;
-        }
-
-        public void Contrast(double value)
-        {
-            Bitmap temp = (Bitmap)image;
-            Bitmap bmap = (Bitmap)temp.Clone();
-            if (value < -100) value = -100;
-            if (value > 100) value = 100;
-            value = (100.0 + value) / 100.0;
-            value *= value;
-            Color c;
-            for (int i = 0; i < bmap.Width; i++)
-            {
-                for (int j = 0; j < bmap.Height; j++)
-                {
-                    c = bmap.GetPixel(i, j);
-                    double pR = c.R / 255.0;
-                    pR -= 0.5;
-                    pR *= value;
-                    pR += 0.5;
-                    pR *= 255;
-                    if (pR < 0) pR = 0;
-                    if (pR > 255) pR = 255;
-
-                    double pG = c.G / 255.0;
-                    pG -= 0.5;
-                    pG *= value;
-                    pG += 0.5;
-                    pG *= 255;
-                    if (pG < 0) pG = 0;
-                    if (pG > 255) pG = 255;
-
-                    double pB = c.B / 255.0;
-                    pB -= 0.5;
-                    pB *= value;
-                    pB += 0.5;
-                    pB *= 255;
-                    if (pB < 0) pB = 0;
-                    if (pB > 255) pB = 255;
-
-                    bmap.SetPixel(i, j, Color.FromArgb((byte)pR, (byte)pG, (byte)pB));
-                }
-            }
-            pictureBox.Image = bmap;
-        }
-
-        
-
-        
-
-        public void Shifter()
-        {
-            Bitmap originalBitmap = image;
-
-            int offsetX = 2000;
-            int offsetY = 1800;
-
-
-            Bitmap offsetBitmap = new Bitmap(originalBitmap.Width + offsetX, originalBitmap.Height + offsetY);
-
-
-            using (Graphics g = Graphics.FromImage(offsetBitmap))
-            {
-                g.Clear(Color.Black);
-            }
-
-
-            for (int y = 0; y < originalBitmap.Height; y++)
-            {
-                for (int x = 0; x < originalBitmap.Width; x++)
-                {
-                    Color pixelColor = originalBitmap.GetPixel(x, y);
-                    offsetBitmap.SetPixel(x + offsetX, y + offsetY, pixelColor);
-                }
-            }
-
-
-            pictureBox.Image = offsetBitmap;
-
-        }
-
         private void pictureBox_Paint(object sender, PaintEventArgs e)
         {
             // Þimdilik Gereksiz
@@ -302,6 +203,348 @@ namespace image_processing_form
             pictureBox.Image = image;
         }
 
+
+
+        float GetFactor(PictureBox pBox)
+        {
+            if (pBox.Image == null) return 0;
+            Size si = pBox.Image.Size;
+            Size sp = pBox.ClientSize;
+            float ri = 1f * si.Width / si.Height;
+            float rp = 1f * sp.Width / sp.Height;
+            float factor = 1f * pBox.Image.Width / pBox.ClientSize.Width;
+            if (rp > ri) factor = 1f * pBox.Image.Height / pBox.ClientSize.Height;
+            return factor;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if Alt key is pressed
+            if (e.KeyCode == Keys.Menu) // Keys.Menu is the Alt key
+            {
+                isAltKeyPressed = true;
+            }
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            // Check if Alt key is released
+            if (e.KeyCode == Keys.Menu) // Keys.Menu is the Alt key
+            {
+                isAltKeyPressed = false;
+            }
+        }
+
+
+
+        // Büyük ihtimalle toplam 1 ya da 2 tane trackBar olacak. 
+        // Her iþlem için ayrý trackBar olmasýna gerek yok.
+        // Hepsi buradan halledilebilir.
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            if (isZoomMode)
+            {
+                pictureBox.Location = new Point(3, 3);
+                if (trackBar1.Value != 0)
+                {
+                    pictureBox.Image = ZoomPicture(image, new Size(trackBar1.Value, trackBar1.Value));
+                }
+            }
+            else if (isBrightnessMode)
+            {
+                ImgProcess.Brightness(pictureBox, ref image, trackBar1.Value);
+            }
+            else if (isContrastMode)
+            {
+                ImgProcess.Contrast(pictureBox, ref image, trackBar1.Value);
+            }
+        }
+
+        // Burasý biraz karýþýk. Pek ellememek lazým.
+        // Oðuzhana danýþ.
+        private void zoomBtn_Click(object sender, EventArgs e)
+        {
+            if (isZoomMode)
+            {
+                afterZoomMode();
+
+            }
+            else
+            {
+                // After fonksiyonlarý
+                afterBrightnessMode();
+                afterContrastMode();
+                afterBlackWhiteMode();
+
+                Logger.Log("'Zoom' fonksiyonu aktif.");
+                trackBar1.Minimum = 1;
+                trackBar1.Maximum = 100;
+                trackBar1.SmallChange = 10;
+                trackBar1.LargeChange = 10;
+                trackBar1.UseWaitCursor = false;
+
+                isBrightnessMode = false;
+                isContrastMode = false;
+                isCropMode = false;
+                isZoomMode = true;
+                isCropMode = false;
+                isCropMode = false;
+                isMakeGrayMode = false;
+                isBinarizeMode = false;
+                isCropMode = false;
+
+                imageBeforeMode = pictureBox.Image;
+
+                // Büyük görsellerde aþýrý zoom yapýnca program uzun süre donuyor. 
+                // Bunun için yüklü görselin boyutuna göre trackBar'ýn maximum deðeri belirlenmeli.
+                // Aþaðýdaki oran baya güzel verimli çalýþýyor.
+                trackBar1.Maximum = Convert.ToInt32((pictureBox.Image.Width <= pictureBox.Image.Height) ? 400000 / pictureBox.Image.Height : 400000 / pictureBox.Image.Width);
+                trackBar1.Value = Convert.ToInt32((trackBar1.Maximum + 1) / 2);
+                pictureBox.Image = ZoomPicture(image, new Size(trackBar1.Value, trackBar1.Value));
+                pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+                trackBar1.Visible = true;
+            }
+        }
+        private void brightnessBtn_Click(object sender, EventArgs e)
+        {
+            if (isBrightnessMode)
+            {
+                afterBrightnessMode();
+            }
+            else
+            {
+                // After fonksiyonlarý
+                afterContrastMode();
+                afterZoomMode();
+                afterBlackWhiteMode();
+
+                pictureBox.Image = imageBeforeMode;
+                Logger.Log("'Brightness' fonksiyonu aktif.");
+
+                // State deðiþimleri için bir fonksiyon yazýlabilir.
+                // Ama þimdilik böyle çünkü yoruldum. Sabah oldu saat 5:35
+                isBrightnessMode = true;
+                isContrastMode = false;
+                isCropMode = false;
+                isZoomMode = false;
+                isCropMode = false;
+                isCropMode = false;
+                isMakeGrayMode = false;
+                isBinarizeMode = false;
+                isCropMode = false;
+
+
+                trackBar1.Minimum = -255;
+                trackBar1.Maximum = 255;
+
+                trackBar1.Value = 0; // Mutlaka max ve minden sonra gelmeli
+                trackBar1.SmallChange = 10;
+                trackBar1.LargeChange = 10;
+                trackBar1.UseWaitCursor = false;
+                trackBar1.Visible = true;
+
+                imageBeforeMode = pictureBox.Image;
+            }
+        }
+
+        private void contrastButton_Click(object sender, EventArgs e)
+        {
+            if (isContrastMode)
+            {
+                afterContrastMode();
+            }
+            else
+            {
+                // After fonksiyonlarý
+                afterBrightnessMode();
+                afterZoomMode();
+                afterBlackWhiteMode();
+
+                pictureBox.Image = imageBeforeMode;
+                Logger.Log("'Contrast' fonksiyonu aktif.");
+
+                // State deðiþimleri
+                isContrastMode = true;
+                isCropMode = false;
+                isZoomMode = false;
+                isBrightnessMode = false;
+                isCropMode = false;
+                isCropMode = false;
+                isMakeGrayMode = false;
+                isBinarizeMode = false;
+                isCropMode = false;
+
+                // Max ve min deðerleri deðiþtirilebilir :).
+
+                trackBar1.Minimum = -100;
+                trackBar1.Maximum = 100;
+
+                trackBar1.Value = 0; // Mutlaka max ve minden sonra gelmeli
+                trackBar1.SmallChange = 10;
+                trackBar1.LargeChange = 10;
+                trackBar1.UseWaitCursor = false;
+                trackBar1.Visible = true;
+
+                imageBeforeMode = pictureBox.Image;
+            }
+        }
+
+        private void blackWhiteBtn_Click(object sender, EventArgs e)
+        {
+            //isBlackWhiteMode = true;
+            //ImgProcess.BlackWhite(pictureBox, ref image);
+            //Logger.Log("'BlackWhite' fonksiyonu çalýþtý.");
+            //isBlackWhiteMode = false;
+
+            if (isBlackWhiteMode)
+            {
+                afterBlackWhiteMode();
+            }
+            else
+            {
+                afterBrightnessMode();
+                afterContrastMode();
+                afterZoomMode();
+
+                pictureBox.Image = imageBeforeMode;
+                trackBar1.Visible = false;
+
+                Logger.Log("'BlackWhite' fonksiyonu aktif.");
+
+                // State deðiþimleri
+                isBlackWhiteMode = true;
+                isCropMode = false;
+                isZoomMode = false;
+                isBrightnessMode = false;
+                isContrastMode = false;
+                isMakeGrayMode = false;
+                isBinarizeMode = false;
+                isShifterMode = false;
+
+                imageBeforeMode = pictureBox.Image;
+                ImgProcess.BlackWhite(pictureBox, ref image);
+            }
+
+        }
+
+
+        private void applyButton_Click(object sender, EventArgs e)
+        {
+            // History özelliði için gerekli
+            if (isBrightnessMode)
+            {
+                ImgProcess.proceesedNames.Add("Brightness");
+            }
+            else if (isContrastMode)
+            {
+                ImgProcess.proceesedNames.Add("Contrast");
+            }
+            else if (isBlackWhiteMode)
+            {
+                ImgProcess.proceesedNames.Add("Black & White");
+            }
+            ImgProcess.processedImages.Add((Bitmap)pictureBox.Image);
+
+            // Program genelinde kullanýlan deðiþkenlere iþlemin uygulanmasý
+            image = (Bitmap)pictureBox.Image;
+            imageBeforeMode = image;
+
+            // Stateleri sýfýrlama
+            isBlackWhiteMode = true;
+            isCropMode = false;
+            isZoomMode = false;
+            isBrightnessMode = false;
+            isContrastMode = false;
+            isMakeGrayMode = false;
+            isBinarizeMode = false;
+            isShifterMode = false;
+
+            // After fonksiyonlarýný çaðýrma ki her þey kapanmýþ gibi olsun.
+            afterBlackWhiteMode();
+            afterBrightnessMode();
+            afterContrastMode();
+            afterZoomMode();
+
+            if(ImgProcess.processedImages.Count > 1)
+            {
+                undoBtn.Enabled = true;
+            }
+
+            MessageBox.Show("Applied.");
+        }
+
+        private void undoBtn_Click(object sender, EventArgs e)
+        {
+            ImgProcess.proceesedNames.RemoveAt(ImgProcess.proceesedNames.Count - 1);
+            ImgProcess.processedImages.RemoveAt(ImgProcess.processedImages.Count - 1);
+
+            image = ImgProcess.processedImages[ImgProcess.processedImages.Count - 1];
+            pictureBox.Image = image;
+            imageBeforeMode = image;
+
+            if (ImgProcess.processedImages.Count == 1)
+            {
+                undoBtn.Enabled = false;
+            }
+
+            MessageBox.Show("Undo.");
+        }
+
+
+
+        // - After fonksiyonlarý -
+        // Tuhaf hatalarýn önüne geçmek için yazýldý.
+        // Eðer bir iþlem yapýlýrken baþka bir iþlem yapýlýrsa tuhaf hatalar oluþuyor.
+        private void afterZoomMode()
+        {
+            Logger.Log("'Zoom' fonksiyonu inaktif.");
+            pictureBox.Image = imageBeforeMode;
+
+            pictureBox.Location = new Point(3, 3);
+            pictureBox.Size = new Size(921, 662);
+            isZoomMode = false;
+            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            trackBar1.Visible = false;
+        }
+
+        private void afterBrightnessMode()
+        {
+            Logger.Log("'Brightness' fonksiyonu inaktif.");
+            isBrightnessMode = false;
+            trackBar1.Visible = false;
+
+            pictureBox.Image = imageBeforeMode;
+        }
+
+        private void afterContrastMode()
+        {
+            Logger.Log("'Contrast' fonksiyonu inaktif.");
+            isContrastMode = false;
+            trackBar1.Visible = false;
+
+            pictureBox.Image = imageBeforeMode;
+        }
+
+        private void afterBlackWhiteMode()
+        {
+            Logger.Log("'BlackWhite' fonksiyonu inaktif.");
+            isBlackWhiteMode = false;
+            pictureBox.Image = imageBeforeMode;
+        }
+
+
+        // - Utility fonksiyonlarý -
+        // Silersen uygulama çalýþmaz.
+        // Puahahahhhaaa
+        // Kýrpma ve zoom fonksiyonlarý için gerekli
+        Image ZoomPicture(Image img, Size size)
+        {
+            Bitmap bmp = new Bitmap(img, Convert.ToInt32(img.Width * size.Width / 100), Convert.ToInt32(img.Height * size.Height / 100));
+            Graphics g = Graphics.FromImage(bmp);
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            return bmp;
+        }
+
         Rectangle ImageArea(PictureBox pbox)
         {
             Size si = pbox.Image.Size;
@@ -341,74 +584,6 @@ namespace image_processing_form
                                        rect.Width * factor, rect.Height * factor));
         }
 
-        float GetFactor(PictureBox pBox)
-        {
-            if (pBox.Image == null) return 0;
-            Size si = pBox.Image.Size;
-            Size sp = pBox.ClientSize;
-            float ri = 1f * si.Width / si.Height;
-            float rp = 1f * sp.Width / sp.Height;
-            float factor = 1f * pBox.Image.Width / pBox.ClientSize.Width;
-            if (rp > ri) factor = 1f * pBox.Image.Height / pBox.ClientSize.Height;
-            return factor;
-        }
-
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
-            // Check if Alt key is pressed
-            if (e.KeyCode == Keys.Menu) // Keys.Menu is the Alt key
-            {
-                isAltKeyPressed = true;
-            }
-        }
-
-        private void Form1_KeyUp(object sender, KeyEventArgs e)
-        {
-            // Check if Alt key is released
-            if (e.KeyCode == Keys.Menu) // Keys.Menu is the Alt key
-            {
-                isAltKeyPressed = false;
-            }
-        }
-
-        Image ZoomPicture(Image img, Size size)
-        {
-            Bitmap bmp = new Bitmap(img, Convert.ToInt32(img.Width * size.Width / 100), Convert.ToInt32(img.Height * size.Height / 100));
-            Graphics g = Graphics.FromImage(bmp);
-            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            return bmp;
-        }
-
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-            pictureBox.Location = new Point(3, 3);
-            if (trackBar1.Value != 0)
-            {
-                pictureBox.Image = ZoomPicture(image, new Size(trackBar1.Value, trackBar1.Value));
-            }
-        }
-
         
-        private void zoomBtn_Click(object sender, EventArgs e)
-        {
-            if (isZoomMode)
-            {
-                pictureBox.Image = imageBeforeZoomMode;
-                pictureBox.Location = new Point(3, 3);
-                pictureBox.Size = new Size(921, 662);
-                isZoomMode = false;
-                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                trackBar1.Visible = false;
-
-            }
-            else
-            {
-                imageBeforeZoomMode = pictureBox.Image;
-                trackBar1.Maximum = Convert.ToInt32((pictureBox.Image.Width <= pictureBox.Image.Height) ? pictureBox.Image.Height / 40 : pictureBox.Image.Width / 40);
-                isZoomMode = true;
-                pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
-                trackBar1.Visible = true;
-            }
-        }
     }
 }
