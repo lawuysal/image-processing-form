@@ -1,18 +1,39 @@
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace image_processing_form
 {
     public partial class Form1 : Form
     {
+
         Bitmap image = new Bitmap("image_2.jpg");
         Bitmap image2 = new Bitmap("image.jpg");
         // PictureBox üzerinde kýrpma yapýlacak alaný temsil eden dikdörtgenin boyutu ve konumu
         Point pDown = Point.Empty;
         Rectangle rect = Rectangle.Empty;
+        bool isAltKeyPressed = false;
+        bool isCropMode = false;
+        bool isZoomMode = false;
+        Image imageBeforeZoomMode = null;
         public Form1()
         {
             InitializeComponent();
 
+            /// -SÝLME- Loglarýn düzgün çalýþmasý için gerkeli!
+            Logger logger = new Logger();
+
+            /// -SÝLME- Zoom özelliðinin akýcýlýðý için gerekli!
+            this.DoubleBuffered = true;
+
+            trackBar1.Minimum = 1;
+            trackBar1.Maximum = 600;
+            trackBar1.SmallChange = 10;
+            trackBar1.LargeChange = 10;
+            trackBar1.UseWaitCursor = false;
+            trackBar1.Visible = false;
+
+            
+            pictureBox.MouseWheel += PictureBox_MouseWheel;
 
             int width = image.Width;
             int height = image.Height;
@@ -20,15 +41,29 @@ namespace image_processing_form
 
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox.Image = image;
-            //Otelei();
-            Brightness(100);
-            //BlackWhite();
+            //Shifter();
+            //ImgProcess.Brightness(pictureBox, ref image, 100);
+            //ImgProcess.BlackWhite(pictureBox, ref image);
             //Contrast(50);
             //MakeGray();
             //Binarize(100);
             //EqualImageDimensionsAndPreventStrecthing(image2, image);
             //EqualImageDimensions(ref image2, ref image);
-            // MultiplyImages(image, image);
+             //MultiplyImages(image, image);
+        }
+
+        
+        private void PictureBox_MouseWheel(object? sender, MouseEventArgs e)
+        {
+            // Check if Alt key is pressed and mouse wheel is scrolled down
+            if (isAltKeyPressed && e.Delta < 0)
+            {
+
+            }
+            else if (isAltKeyPressed && e.Delta > 0)
+            {
+
+            }
         }
 
         public void MultiplyImages(Bitmap image1, Bitmap image2)
@@ -80,57 +115,6 @@ namespace image_processing_form
             pictureBox.Image = bmap;
         }
 
-        //Çalýþmýyor
-        public void EqualImageDimensionsAndPreventStrecthing(Bitmap image1, Bitmap image2)
-        {
-            // Calculate scaling factors for both images
-            float scaleX = (float)image2.Width / image1.Width;
-            float scaleY = (float)image2.Height / image1.Height;
-
-            // Choose the smaller scaling factor to maintain aspect ratio
-            float scale = Math.Min(scaleX, scaleY);
-
-            // Calculate new dimensions for the images
-            int newWidth = (int)(image1.Width * scale);
-            int newHeight = (int)(image1.Height * scale);
-
-            // Resize both images using the calculated dimensions
-            Bitmap resizedImage1 = new Bitmap(image1, newWidth, newHeight);
-            Bitmap resizedImage2 = new Bitmap(image2, newWidth, newHeight);
-
-            // Display the second image in the PictureBox
-            pictureBox.Image = resizedImage2;
-
-            // Dispose of the original images
-            image1.Dispose();
-            image2.Dispose();
-        }
-
-        //Çalýþmýyor
-        public void EqualImageDimensionsWithoutStretching(Bitmap image1, Bitmap image2)
-        {
-            // Calculate scaling factors for both images
-            float scaleX = (float)image2.Width / image1.Width;
-            float scaleY = (float)image2.Height / image1.Height;
-
-            // Choose the smaller scaling factor to maintain aspect ratio
-            float scale = Math.Min(scaleX, scaleY);
-
-            // Calculate new dimensions for the images
-            int newWidth = (int)(image1.Width * scale);
-            int newHeight = (int)(image1.Height * scale);
-
-            // Resize both images using the calculated dimensions
-            Bitmap resizedImage1 = new Bitmap(image1, newWidth, newHeight);
-            Bitmap resizedImage2 = new Bitmap(image2, newWidth, newHeight);
-
-            // Display the second image in the PictureBox
-            pictureBox.Image = resizedImage2;
-
-            // Dispose of the original images
-            image1.Dispose();
-            image2.Dispose();
-        }
 
         public void EqualImageDimensions(ref Bitmap image1, ref Bitmap image2)
         {
@@ -230,58 +214,11 @@ namespace image_processing_form
             pictureBox.Image = bmap;
         }
 
-        public void BlackWhite()
-        {
-            Bitmap temp = (Bitmap)image;
-            Bitmap bmap = (Bitmap)temp.Clone();
-            Color c;
-            for (int i = 0; i < bmap.Width; i++)
-            {
-                for (int j = 0; j < bmap.Height; j++)
-                {
-                    c = bmap.GetPixel(i, j);
-                    int cR = c.R;
-                    int cG = c.G;
-                    int cB = c.B;
-                    int avg = (cR + cG + cB) / 3;
-                    bmap.SetPixel(i, j, Color.FromArgb(avg, avg, avg));
-                }
-            }
-            pictureBox.Image = bmap;
-        }
+        
 
-        public void Brightness(int value)
-        {
-            Bitmap temp = (Bitmap)image;
-            Bitmap bmap = (Bitmap)temp.Clone();
-            if (value < -255) value = -255;
-            if (value > 255) value = 255;
-            Color c;
-            for (int i = 0; i < bmap.Width; i++)
-            {
-                for (int j = 0; j < bmap.Height; j++)
-                {
-                    c = bmap.GetPixel(i, j);
-                    int cR = c.R + value;
-                    int cG = c.G + value;
-                    int cB = c.B + value;
+        
 
-                    if (cR < 0) cR = 1;
-                    if (cR > 255) cR = 255;
-
-                    if (cG < 0) cG = 1;
-                    if (cG > 255) cG = 255;
-
-                    if (cB < 0) cB = 1;
-                    if (cB > 255) cB = 255;
-
-                    bmap.SetPixel(i, j, Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
-                }
-            }
-            pictureBox.Image = bmap;
-        }
-
-        public void Otelei()
+        public void Shifter()
         {
             Bitmap originalBitmap = image;
 
@@ -314,42 +251,50 @@ namespace image_processing_form
 
         private void pictureBox_Paint(object sender, PaintEventArgs e)
         {
-            // Dikdörtgeni çiz
-            //e.Graphics.DrawRectangle(Pens.Red, cropRectangle);
+            // Þimdilik Gereksiz
         }
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            pDown = e.Location;
-            pictureBox.Refresh();
+            if (isCropMode)
+            {
+                pDown = e.Location;
+                pictureBox.Refresh();
+            }
         }
 
         private void pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!e.Button.HasFlag(MouseButtons.Left)) return;
-
-            rect = new Rectangle(pDown, new Size(e.X - pDown.X, e.Y - pDown.Y));
-            using (Graphics g = pictureBox.CreateGraphics())
+            if (isCropMode)
             {
-                pictureBox.Refresh();
-                g.DrawRectangle(Pens.Orange, rect);
+                if (!e.Button.HasFlag(MouseButtons.Left)) return;
+
+                rect = new Rectangle(pDown, new Size(e.X - pDown.X, e.Y - pDown.Y));
+                using (Graphics g = pictureBox.CreateGraphics())
+                {
+                    pictureBox.Refresh();
+                    g.DrawRectangle(Pens.Orange, rect);
+                }
             }
         }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            Rectangle iR = ImageArea(pictureBox);
-            rect = new Rectangle(pDown.X - iR.X, pDown.Y - iR.Y,
-                                 e.X - pDown.X, e.Y - pDown.Y);
-            Rectangle rectSrc = Scaled(rect, pictureBox, true);
-            Rectangle rectDest = new Rectangle(Point.Empty, rectSrc.Size);
-
-            Bitmap bmp = new Bitmap(rectDest.Width, rectDest.Height);
-            using (Graphics g = Graphics.FromImage(bmp))
+            if (isCropMode)
             {
-                g.DrawImage(pictureBox.Image, rectDest, rectSrc, GraphicsUnit.Pixel);
+                Rectangle iR = ImageArea(pictureBox);
+                rect = new Rectangle(pDown.X - iR.X, pDown.Y - iR.Y,
+                                     e.X - pDown.X, e.Y - pDown.Y);
+                Rectangle rectSrc = Scaled(rect, pictureBox, true);
+                Rectangle rectDest = new Rectangle(Point.Empty, rectSrc.Size);
+
+                Bitmap bmp = new Bitmap(rectDest.Width, rectDest.Height);
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.DrawImage(pictureBox.Image, rectDest, rectSrc, GraphicsUnit.Pixel);
+                }
+                pictureBox.Image = bmp;
             }
-            pictureBox.Image = bmp;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -406,6 +351,64 @@ namespace image_processing_form
             float factor = 1f * pBox.Image.Width / pBox.ClientSize.Width;
             if (rp > ri) factor = 1f * pBox.Image.Height / pBox.ClientSize.Height;
             return factor;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check if Alt key is pressed
+            if (e.KeyCode == Keys.Menu) // Keys.Menu is the Alt key
+            {
+                isAltKeyPressed = true;
+            }
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            // Check if Alt key is released
+            if (e.KeyCode == Keys.Menu) // Keys.Menu is the Alt key
+            {
+                isAltKeyPressed = false;
+            }
+        }
+
+        Image ZoomPicture(Image img, Size size)
+        {
+            Bitmap bmp = new Bitmap(img, Convert.ToInt32(img.Width * size.Width / 100), Convert.ToInt32(img.Height * size.Height / 100));
+            Graphics g = Graphics.FromImage(bmp);
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            return bmp;
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            pictureBox.Location = new Point(3, 3);
+            if (trackBar1.Value != 0)
+            {
+                pictureBox.Image = ZoomPicture(image, new Size(trackBar1.Value, trackBar1.Value));
+            }
+        }
+
+        
+        private void zoomBtn_Click(object sender, EventArgs e)
+        {
+            if (isZoomMode)
+            {
+                pictureBox.Image = imageBeforeZoomMode;
+                pictureBox.Location = new Point(3, 3);
+                pictureBox.Size = new Size(921, 662);
+                isZoomMode = false;
+                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                trackBar1.Visible = false;
+
+            }
+            else
+            {
+                imageBeforeZoomMode = pictureBox.Image;
+                trackBar1.Maximum = Convert.ToInt32((pictureBox.Image.Width <= pictureBox.Image.Height) ? pictureBox.Image.Height / 40 : pictureBox.Image.Width / 40);
+                isZoomMode = true;
+                pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+                trackBar1.Visible = true;
+            }
         }
     }
 }
