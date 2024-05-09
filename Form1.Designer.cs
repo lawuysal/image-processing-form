@@ -29,21 +29,30 @@
         private void InitializeComponent()
         {
             pictureBox = new PictureBox();
-            button1 = new Button();
             panel1 = new Panel();
             blackWhiteBtn = new Button();
             contrastButton = new Button();
             brightnessBtn = new Button();
             zoomBtn = new Button();
             trackBar1 = new TrackBar();
-            panel2 = new Panel();
             applyButton = new Button();
-            panel3 = new Panel();
+            panel2 = new Panel();
+            openFileBtn = new Button();
+            label2 = new Label();
+            historyPanel = new Panel();
+            panel4 = new Panel();
+            pictureBox1 = new PictureBox();
+            label1 = new Label();
             undoBtn = new Button();
+            panel3 = new Panel();
+            exportBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             panel2.SuspendLayout();
+            historyPanel.SuspendLayout();
+            panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel3.SuspendLayout();
             SuspendLayout();
             // 
@@ -60,16 +69,6 @@
             pictureBox.MouseMove += pictureBox_MouseMove;
             pictureBox.MouseUp += pictureBox_MouseUp;
             // 
-            // button1
-            // 
-            button1.Location = new Point(14, 12);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 1;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(83, 83, 83);
@@ -78,7 +77,6 @@
             panel1.Controls.Add(brightnessBtn);
             panel1.Controls.Add(zoomBtn);
             panel1.Controls.Add(trackBar1);
-            panel1.Controls.Add(button1);
             panel1.Location = new Point(43, 12);
             panel1.Name = "panel1";
             panel1.Size = new Size(1265, 125);
@@ -86,7 +84,7 @@
             // 
             // blackWhiteBtn
             // 
-            blackWhiteBtn.Location = new Point(461, 49);
+            blackWhiteBtn.Location = new Point(135, 74);
             blackWhiteBtn.Name = "blackWhiteBtn";
             blackWhiteBtn.Size = new Size(94, 29);
             blackWhiteBtn.TabIndex = 6;
@@ -96,7 +94,7 @@
             // 
             // contrastButton
             // 
-            contrastButton.Location = new Point(298, 47);
+            contrastButton.Location = new Point(135, 22);
             contrastButton.Name = "contrastButton";
             contrastButton.Size = new Size(94, 29);
             contrastButton.TabIndex = 5;
@@ -106,7 +104,7 @@
             // 
             // brightnessBtn
             // 
-            brightnessBtn.Location = new Point(157, 47);
+            brightnessBtn.Location = new Point(35, 74);
             brightnessBtn.Name = "brightnessBtn";
             brightnessBtn.Size = new Size(94, 29);
             brightnessBtn.TabIndex = 4;
@@ -116,7 +114,7 @@
             // 
             // zoomBtn
             // 
-            zoomBtn.Location = new Point(14, 47);
+            zoomBtn.Location = new Point(35, 22);
             zoomBtn.Name = "zoomBtn";
             zoomBtn.Size = new Size(94, 29);
             zoomBtn.TabIndex = 3;
@@ -126,16 +124,30 @@
             // 
             // trackBar1
             // 
-            trackBar1.Location = new Point(901, 47);
+            trackBar1.Location = new Point(956, 47);
             trackBar1.Name = "trackBar1";
             trackBar1.Size = new Size(275, 56);
             trackBar1.TabIndex = 2;
             trackBar1.Visible = false;
             trackBar1.Scroll += trackBar1_Scroll;
             // 
+            // applyButton
+            // 
+            applyButton.Location = new Point(174, 18);
+            applyButton.Name = "applyButton";
+            applyButton.Size = new Size(94, 29);
+            applyButton.TabIndex = 0;
+            applyButton.Text = "Apply";
+            applyButton.UseVisualStyleBackColor = true;
+            applyButton.Click += applyButton_Click;
+            // 
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(83, 83, 83);
+            panel2.Controls.Add(exportBtn);
+            panel2.Controls.Add(openFileBtn);
+            panel2.Controls.Add(label2);
+            panel2.Controls.Add(historyPanel);
             panel2.Controls.Add(undoBtn);
             panel2.Controls.Add(applyButton);
             panel2.Location = new Point(976, 143);
@@ -143,15 +155,75 @@
             panel2.Size = new Size(332, 668);
             panel2.TabIndex = 4;
             // 
-            // applyButton
+            // openFileBtn
             // 
-            applyButton.Location = new Point(99, 29);
-            applyButton.Name = "applyButton";
-            applyButton.Size = new Size(94, 29);
-            applyButton.TabIndex = 0;
-            applyButton.Text = "Apply";
-            applyButton.UseVisualStyleBackColor = true;
-            applyButton.Click += applyButton_Click;
+            openFileBtn.Location = new Point(39, 102);
+            openFileBtn.Name = "openFileBtn";
+            openFileBtn.Size = new Size(94, 29);
+            openFileBtn.TabIndex = 4;
+            openFileBtn.Text = "Open";
+            openFileBtn.UseVisualStyleBackColor = true;
+            openFileBtn.Click += openFileBtn_Click;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.ForeColor = Color.White;
+            label2.Location = new Point(29, 177);
+            label2.Name = "label2";
+            label2.Size = new Size(59, 20);
+            label2.TabIndex = 3;
+            label2.Text = "History:";
+            // 
+            // historyPanel
+            // 
+            historyPanel.AutoScroll = true;
+            historyPanel.AutoScrollMargin = new Size(10, 10);
+            historyPanel.BackColor = Color.FromArgb(66, 66, 66);
+            historyPanel.Controls.Add(panel4);
+            historyPanel.Location = new Point(26, 200);
+            historyPanel.Name = "historyPanel";
+            historyPanel.Size = new Size(284, 451);
+            historyPanel.TabIndex = 2;
+            // 
+            // panel4
+            // 
+            panel4.BackColor = Color.FromArgb(83, 83, 83);
+            panel4.Controls.Add(pictureBox1);
+            panel4.Controls.Add(label1);
+            panel4.Location = new Point(12, 12);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(260, 100);
+            panel4.TabIndex = 2;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackColor = Color.DimGray;
+            pictureBox1.Location = new Point(15, 10);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(80, 80);
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(120, 40);
+            label1.Name = "label1";
+            label1.Size = new Size(50, 20);
+            label1.TabIndex = 1;
+            label1.Text = "label1";
+            // 
+            // undoBtn
+            // 
+            undoBtn.Location = new Point(39, 18);
+            undoBtn.Name = "undoBtn";
+            undoBtn.Size = new Size(94, 29);
+            undoBtn.TabIndex = 1;
+            undoBtn.Text = "Undo";
+            undoBtn.UseVisualStyleBackColor = true;
+            undoBtn.Click += undoBtn_Click;
             // 
             // panel3
             // 
@@ -163,15 +235,15 @@
             panel3.Size = new Size(927, 668);
             panel3.TabIndex = 5;
             // 
-            // undoBtn
+            // exportBtn
             // 
-            undoBtn.Location = new Point(99, 75);
-            undoBtn.Name = "undoBtn";
-            undoBtn.Size = new Size(94, 29);
-            undoBtn.TabIndex = 1;
-            undoBtn.Text = "Undo";
-            undoBtn.UseVisualStyleBackColor = true;
-            undoBtn.Click += undoBtn_Click;
+            exportBtn.Location = new Point(174, 102);
+            exportBtn.Name = "exportBtn";
+            exportBtn.Size = new Size(94, 29);
+            exportBtn.TabIndex = 5;
+            exportBtn.Text = "Export";
+            exportBtn.UseVisualStyleBackColor = true;
+            exportBtn.Click += exportBtn_Click;
             // 
             // Form1
             // 
@@ -192,6 +264,11 @@
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
             panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            historyPanel.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel3.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -199,7 +276,6 @@
         #endregion
 
         private PictureBox pictureBox;
-        private Button button1;
         private Panel panel1;
         private Panel panel2;
         private Panel panel3;
@@ -210,5 +286,12 @@
         private Button blackWhiteBtn;
         private Button applyButton;
         private Button undoBtn;
+        private Panel historyPanel;
+        private Label label1;
+        private PictureBox pictureBox1;
+        private Label label2;
+        private Panel panel4;
+        private Button openFileBtn;
+        private Button exportBtn;
     }
 }

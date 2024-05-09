@@ -1,4 +1,5 @@
 using System.Diagnostics.Metrics;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -42,7 +43,12 @@ namespace image_processing_form
 
             /// -SÝLME- Undo iþlemi için gerekli!
             ImgProcess.processedImages.Add(image);
+            ImgProcess.proceesedNames.Add("Original");
             undoBtn.Enabled = false;
+            CreateHistoryTiles();
+
+            // Control Butonlarý
+            applyButton.Visible = false;
 
 
             trackBar1.Minimum = 1;
@@ -69,7 +75,7 @@ namespace image_processing_form
             //ImgProcess.Binarize(pictureBox, ref image, 100);
             //EqualImageDimensionsAndPreventStrecthing(image2, image);
             //EqualImageDimensions(ref image2, ref image);
-            //MultiplyImages(image, image);
+            MultiplyImages(image, image);
         }
 
 
@@ -106,7 +112,6 @@ namespace image_processing_form
                 }
             }
             pictureBox.Image = bmap;
-            MultiplyImages(bmap, bmap);
         }
 
         public void AddImages(Bitmap image1, Bitmap image2)
@@ -267,7 +272,7 @@ namespace image_processing_form
             if (isZoomMode)
             {
                 afterZoomMode();
-
+                hideControlButtons();
             }
             else
             {
@@ -303,6 +308,8 @@ namespace image_processing_form
                 pictureBox.Image = ZoomPicture(image, new Size(trackBar1.Value, trackBar1.Value));
                 pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
                 trackBar1.Visible = true;
+
+                hideControlButtons();
             }
         }
         private void brightnessBtn_Click(object sender, EventArgs e)
@@ -310,6 +317,7 @@ namespace image_processing_form
             if (isBrightnessMode)
             {
                 afterBrightnessMode();
+                hideControlButtons();
             }
             else
             {
@@ -344,6 +352,8 @@ namespace image_processing_form
                 trackBar1.Visible = true;
 
                 imageBeforeMode = pictureBox.Image;
+
+                showControlButtons();
             }
         }
 
@@ -352,6 +362,8 @@ namespace image_processing_form
             if (isContrastMode)
             {
                 afterContrastMode();
+                hideControlButtons();
+
             }
             else
             {
@@ -386,6 +398,8 @@ namespace image_processing_form
                 trackBar1.Visible = true;
 
                 imageBeforeMode = pictureBox.Image;
+
+                showControlButtons();
             }
         }
 
@@ -399,6 +413,7 @@ namespace image_processing_form
             if (isBlackWhiteMode)
             {
                 afterBlackWhiteMode();
+                hideControlButtons();
             }
             else
             {
@@ -423,6 +438,8 @@ namespace image_processing_form
 
                 imageBeforeMode = pictureBox.Image;
                 ImgProcess.BlackWhite(pictureBox, ref image);
+
+                showControlButtons();
             }
 
         }
@@ -441,7 +458,7 @@ namespace image_processing_form
             }
             else if (isBlackWhiteMode)
             {
-                ImgProcess.proceesedNames.Add("Black & White");
+                ImgProcess.proceesedNames.Add("Black - White");
             }
             ImgProcess.processedImages.Add((Bitmap)pictureBox.Image);
 
@@ -465,12 +482,16 @@ namespace image_processing_form
             afterContrastMode();
             afterZoomMode();
 
-            if(ImgProcess.processedImages.Count > 1)
+            if (ImgProcess.processedImages.Count > 1)
             {
                 undoBtn.Enabled = true;
             }
 
             MessageBox.Show("Applied.");
+
+            CreateHistoryTiles();
+
+            applyButton.Visible = false;
         }
 
         private void undoBtn_Click(object sender, EventArgs e)
@@ -488,6 +509,10 @@ namespace image_processing_form
             }
 
             MessageBox.Show("Undo.");
+
+            Control lastControl = historyPanel.Controls[historyPanel.Controls.Count - 1];
+            historyPanel.Controls.Remove(lastControl);
+            lastControl.Dispose();
         }
 
 
@@ -530,6 +555,16 @@ namespace image_processing_form
             Logger.Log("'BlackWhite' fonksiyonu inaktif.");
             isBlackWhiteMode = false;
             pictureBox.Image = imageBeforeMode;
+        }
+
+        private void hideControlButtons()
+        {
+            applyButton.Visible = false;
+        }
+
+        private void showControlButtons()
+        {
+            applyButton.Visible = true;
         }
 
 
@@ -584,6 +619,94 @@ namespace image_processing_form
                                        rect.Width * factor, rect.Height * factor));
         }
 
-        
+        void CreateHistoryTiles()
+        {
+            historyPanel.Controls.Clear();
+            int count = ImgProcess.proceesedNames.Count;
+            for (int i = 0; i < count; i++)
+            {
+                Panel pnl = new Panel();
+                pnl.Size = new Size(260, 100);
+                pnl.Location = new Point(12, 12 + i * 110);
+                pnl.BackColor = Color.FromArgb(83, 83, 83);
+
+                PictureBox pb = new PictureBox();
+                pb.Image = ImgProcess.processedImages[i];
+                pb.Size = new Size(80, 80);
+                pb.Location = new Point(15, 10);
+                pb.SizeMode = PictureBoxSizeMode.Zoom;
+                pb.BorderStyle = BorderStyle.FixedSingle;
+
+                Label lbl = new Label();
+                lbl.Text = ImgProcess.proceesedNames[i];
+                lbl.Location = new Point(120, 40);
+                lbl.ForeColor = Color.White;
+
+                pnl.Controls.Add(pb);
+                pnl.Controls.Add(lbl);
+
+                historyPanel.Controls.Add(pnl);
+
+
+            }
+
+        }
+
+        private void openFileBtn_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Resim Dosyalarý|*.jpg;*.jpeg;*.png;*.gif;*.bmp|Tüm Dosyalar|*.*";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+
+                    Bitmap selectedImage = new Bitmap(openFileDialog.FileName);
+
+                    image = selectedImage;
+                    pictureBox.Image = selectedImage;
+                    imageBeforeMode = selectedImage;
+                    ImgProcess.processedImages.Clear();
+                    ImgProcess.proceesedNames.Clear();
+                    ImgProcess.processedImages.Add(selectedImage);
+                    ImgProcess.proceesedNames.Add("Original");
+                    CreateHistoryTiles();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Resim yüklenirken bir hata oluþtu: " + ex.Message);
+                }
+            }
+        }
+
+        private void exportBtn_Click(object sender, EventArgs e)
+        {
+            Bitmap selectedImage = (Bitmap)pictureBox.Image;
+            if (selectedImage != null)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+                saveFileDialog.Filter = "JPEG Dosyasý|*.jpg";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        selectedImage.Save(saveFileDialog.FileName, ImageFormat.Jpeg);
+                        MessageBox.Show("Resim baþarýyla kaydedildi.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Resim kaydedilirken bir hata oluþtu: " + ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Önce bir resim seçmelisiniz.");
+            }
+
+        }
     }
 }
