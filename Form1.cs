@@ -71,11 +71,11 @@ namespace image_processing_form
             //ImgProcess.Brightness(pictureBox, ref image, 100);
             //ImgProcess.BlackWhite(pictureBox, ref image);
             //ImgProcess.Contrast(pictureBox, ref image, 50);
-            //ImgProcess.MakeGray(pictureBox, ref image);
-            //ImgProcess.Binarize(pictureBox, ref image, 100);
+            //ImgProcess.MakeGray(pictureBox, ref image); // 
+            ImgProcess.Binarize(pictureBox, ref image, 100);
             //EqualImageDimensionsAndPreventStrecthing(image2, image);
             //EqualImageDimensions(ref image2, ref image);
-            MultiplyImages(image, image);
+            //MultiplyImages(image, image);
         }
 
 
@@ -312,6 +312,56 @@ namespace image_processing_form
                 hideControlButtons();
             }
         }
+        private void makeGrayBtn_Click(object sender, EventArgs e)
+        {
+            // þimdi test yapýyoruz
+            // if içindeki ifadeyi dðiþtirmeyi unutmuþuzk
+            // þimdi aynen çalýþtý
+            // siz de yeni fonksiyonlarý videodaki gibi ekleyin ki program patlamasýn puahahahahah
+            if (isMakeGrayMode)
+            {
+
+                afterMakeGrayMode();
+                hideControlButtons();
+            }
+            else
+            {
+                // burada ise diðer iþlemler kapatýlacak
+                // After fonksiyonlarý
+                afterContrastMode();
+                afterZoomMode();
+                afterBlackWhiteMode();
+                afterBrightnessMode();
+
+                pictureBox.Image = imageBeforeMode;
+                Logger.Log("'MakeGray' fonksiyonu aktif.");
+
+                // State deðiþimleri için bir fonksiyon yazýlabilir.
+                // Ama þimdilik böyle çünkü yoruldum. Sabah oldu saat 5:35
+                // þuan saat 3:01
+                isBrightnessMode = false;
+                isContrastMode = false;
+                isCropMode = false;
+                isZoomMode = false;
+                isCropMode = false;
+                isCropMode = false;
+                isMakeGrayMode = true;
+                isBinarizeMode = false;
+                isCropMode = false;
+
+
+
+                trackBar1.Visible = false;
+
+
+                imageBeforeMode = pictureBox.Image;
+                ImgProcess.MakeGray(pictureBox, ref image);
+                // þimdi ise apply butonuna bakalým
+                showControlButtons();
+            }
+
+        }
+
         private void brightnessBtn_Click(object sender, EventArgs e)
         {
             if (isBrightnessMode)
@@ -460,6 +510,12 @@ namespace image_processing_form
             {
                 ImgProcess.proceesedNames.Add("Black - White");
             }
+            else if (isMakeGrayMode)
+            {
+                ImgProcess.proceesedNames.Add("Make Gray");
+            }
+
+
             ImgProcess.processedImages.Add((Bitmap)pictureBox.Image);
 
             // Program genelinde kullanýlan deðiþkenlere iþlemin uygulanmasý
@@ -467,7 +523,7 @@ namespace image_processing_form
             imageBeforeMode = image;
 
             // Stateleri sýfýrlama
-            isBlackWhiteMode = true;
+            isBlackWhiteMode = false;
             isCropMode = false;
             isZoomMode = false;
             isBrightnessMode = false;
@@ -476,11 +532,12 @@ namespace image_processing_form
             isBinarizeMode = false;
             isShifterMode = false;
 
-            // After fonksiyonlarýný çaðýrma ki her þey kapanmýþ gibi olsun.
+            // After fonksiyonlarýný çaðýr ki her þey kapanmýþ gibi olsun.
             afterBlackWhiteMode();
             afterBrightnessMode();
             afterContrastMode();
             afterZoomMode();
+            afterMakeGrayMode();
 
             if (ImgProcess.processedImages.Count > 1)
             {
@@ -538,6 +595,13 @@ namespace image_processing_form
             isBrightnessMode = false;
             trackBar1.Visible = false;
 
+            pictureBox.Image = imageBeforeMode;
+        }
+
+        private void afterMakeGrayMode()
+        {
+            Logger.Log("'MakeGray' fonksiyonu inaktif.");
+            isMakeGrayMode = false;
             pictureBox.Image = imageBeforeMode;
         }
 
@@ -708,5 +772,7 @@ namespace image_processing_form
             }
 
         }
+
+
     }
 }

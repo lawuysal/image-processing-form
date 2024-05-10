@@ -172,7 +172,8 @@ namespace image_processing_form
         public static void MakeGray(PictureBox pictureBox, ref Bitmap image)
         {
             try
-            {
+            { // Resmin nasıl işlenmesini istiyorsak try bloğunun içine yazılır.
+                // Atama en son picture box a yapılır.
                 Bitmap temp = (Bitmap)image;
                 Bitmap bmap = (Bitmap)temp.Clone();
                 Color c;
@@ -185,14 +186,10 @@ namespace image_processing_form
                         bmap.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
                     }
                 }
-                pictureBox.Image = bmap;
-
-                //// History özelliği için gerekli.
-                //processedImages.Add(pictureBox.Image);
-                //proceesedNames.Add("Gray");
+                pictureBox.Image = bmap; // burada
             }
             catch (Exception ex)
-            {
+            { // catch bloğu kopyala yapıştır olabilir sıkıntı yok aq
                 MessageBox.Show("'MakeGray' fonksiyonu çalışırken hata meydana geldi: " + ex.Message);
                 Logger.Log("'MakeGray' fonksiyonu çalışırken hata meydana geldi: " + ex.Message);
             }

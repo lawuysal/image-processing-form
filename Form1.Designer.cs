@@ -30,6 +30,7 @@
         {
             pictureBox = new PictureBox();
             panel1 = new Panel();
+            makeGrayBtn = new Button();
             blackWhiteBtn = new Button();
             contrastButton = new Button();
             brightnessBtn = new Button();
@@ -37,6 +38,7 @@
             trackBar1 = new TrackBar();
             applyButton = new Button();
             panel2 = new Panel();
+            exportBtn = new Button();
             openFileBtn = new Button();
             label2 = new Label();
             historyPanel = new Panel();
@@ -45,7 +47,6 @@
             label1 = new Label();
             undoBtn = new Button();
             panel3 = new Panel();
-            exportBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
@@ -72,6 +73,7 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(83, 83, 83);
+            panel1.Controls.Add(makeGrayBtn);
             panel1.Controls.Add(blackWhiteBtn);
             panel1.Controls.Add(contrastButton);
             panel1.Controls.Add(brightnessBtn);
@@ -81,6 +83,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1265, 125);
             panel1.TabIndex = 3;
+            // 
+            // makeGrayBtn
+            // 
+            makeGrayBtn.Location = new Point(235, 22);
+            makeGrayBtn.Name = "makeGrayBtn";
+            makeGrayBtn.Size = new Size(94, 29);
+            makeGrayBtn.TabIndex = 7;
+            makeGrayBtn.Text = "MakeGray";
+            makeGrayBtn.UseVisualStyleBackColor = true;
+            makeGrayBtn.Click += makeGrayBtn_Click;
             // 
             // blackWhiteBtn
             // 
@@ -155,13 +167,23 @@
             panel2.Size = new Size(332, 668);
             panel2.TabIndex = 4;
             // 
+            // exportBtn
+            // 
+            exportBtn.Location = new Point(174, 102);
+            exportBtn.Name = "exportBtn";
+            exportBtn.Size = new Size(94, 29);
+            exportBtn.TabIndex = 5;
+            exportBtn.Text = "Export";
+            exportBtn.UseVisualStyleBackColor = true;
+            exportBtn.Click += exportBtn_Click;
+            // 
             // openFileBtn
             // 
             openFileBtn.Location = new Point(39, 102);
             openFileBtn.Name = "openFileBtn";
             openFileBtn.Size = new Size(94, 29);
             openFileBtn.TabIndex = 4;
-            openFileBtn.Text = "Open";
+            openFileBtn.Text = "Import";
             openFileBtn.UseVisualStyleBackColor = true;
             openFileBtn.Click += openFileBtn_Click;
             // 
@@ -235,16 +257,6 @@
             panel3.Size = new Size(927, 668);
             panel3.TabIndex = 5;
             // 
-            // exportBtn
-            // 
-            exportBtn.Location = new Point(174, 102);
-            exportBtn.Name = "exportBtn";
-            exportBtn.Size = new Size(94, 29);
-            exportBtn.TabIndex = 5;
-            exportBtn.Text = "Export";
-            exportBtn.UseVisualStyleBackColor = true;
-            exportBtn.Click += exportBtn_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -293,5 +305,6 @@
         private Panel panel4;
         private Button openFileBtn;
         private Button exportBtn;
+        private Button makeGrayBtn;
     }
 }
