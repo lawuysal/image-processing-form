@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using ScottPlot.WinForms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -225,10 +227,6 @@ namespace image_processing_form
                     }
                 }
                 pictureBox.Image = bmap;
-
-                // History özelliği için gerekli.
-                //processedImages.Add(pictureBox.Image);
-                //proceesedNames.Add("Binarize: " + threshold.ToString() );
             }
             catch (Exception ex)
             {
@@ -276,6 +274,41 @@ namespace image_processing_form
                 MessageBox.Show("'Shifter' fonksiyonu çalışırken hata meydana geldi: " + ex.Message);
                 Logger.Log("'Shifter' fonksiyonu çalışırken hata meydana geldi: " + ex.Message);
             }
+        }
+
+        public static void  CalculteHistogram(FormsPlot histGraph, ref Bitmap image)
+        {
+            // Histogram dizisi oluştur
+            int[] histogram = new int[256];
+
+            // Her piksel için histogramu hesapla
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    System.Drawing.Color pixelColor = image.GetPixel(x, y);
+                    int grayValue = (int)(pixelColor.R * 0.3 + pixelColor.G * 0.59 + pixelColor.B * 0.11); // Renkleri gri tonlamaya dönüştür
+                    histogram[grayValue]++; // Histogram dizisinde ilgili gri ton değerini artır
+                }
+            }
+
+            //ScottPlot.Bar[] bars = 
+
+            //histGraph.Plot.Add.Bars(histogram);
+            histGraph.Plot.Clear();
+            histGraph.Plot.Axes.SetLimits(0, 256, 0, 10);
+            histGraph.Plot.Axes.AutoScaleExpand();
+
+            for (int i = 0; i < histogram.Length; i++)
+            {
+                histGraph.Plot.Add.Bar(position: i, value: histogram[i]);
+                histGraph.Plot.Axes.AutoScaleExpand();
+                
+                histGraph.Refresh();
+            }
+
+            histGraph.Refresh();
+
         }
     }
 }

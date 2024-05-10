@@ -18,6 +18,7 @@ namespace image_processing_form
         bool isMakeGrayMode = false;
         bool isBinarizeMode = false;
         bool isShifterMode = false;
+        bool isHistogramVisible = false;
 
         Bitmap image = new Bitmap("image_2.jpg");
         //Bitmap image2 = new Bitmap("image.jpg");
@@ -32,6 +33,10 @@ namespace image_processing_form
         public Form1()
         {
             InitializeComponent();
+
+            histGraph.Plot.Axes.SetLimits(0, 256, 0, 10);
+            histGraph.Plot.Axes.AutoScaleExpand();
+            histGraph.Visible = false;
 
             imageBeforeMode = image;
 
@@ -49,7 +54,6 @@ namespace image_processing_form
 
             // Control Butonlarý
             applyButton.Visible = false;
-
 
             trackBar1.Minimum = 1;
             trackBar1.Maximum = 600;
@@ -72,9 +76,10 @@ namespace image_processing_form
             //ImgProcess.BlackWhite(pictureBox, ref image);
             //ImgProcess.Contrast(pictureBox, ref image, 50);
             //ImgProcess.MakeGray(pictureBox, ref image); // 
-            ImgProcess.Binarize(pictureBox, ref image, 100);
+            //ImgProcess.Binarize(pictureBox, ref image, 100);
             //EqualImageDimensionsAndPreventStrecthing(image2, image);
             //EqualImageDimensions(ref image2, ref image);
+            ImgProcess.CalculteHistogram(histGraph, ref image);
             //MultiplyImages(image, image);
         }
 
@@ -200,7 +205,22 @@ namespace image_processing_form
                     g.DrawImage(pictureBox.Image, rectDest, rectSrc, GraphicsUnit.Pixel);
                 }
                 pictureBox.Image = bmp;
+                image = bmp;
+
+                isCropMode = false;
+                ImgProcess.processedImages.Add((Bitmap)pictureBox.Image);
+                ImgProcess.proceesedNames.Add("Crop");
+                CreateHistoryTiles();
+
+                if (ImgProcess.processedImages.Count > 1)
+                {
+                    undoBtn.Enabled = true;
+                }
+
+                ImgProcess.CalculteHistogram(histGraph, ref image);
             }
+
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -262,6 +282,10 @@ namespace image_processing_form
             else if (isContrastMode)
             {
                 ImgProcess.Contrast(pictureBox, ref image, trackBar1.Value);
+            }
+            else if (isBinarizeMode)
+            {
+                ImgProcess.Binarize(pictureBox, ref image, trackBar1.Value);
             }
         }
 
@@ -332,6 +356,7 @@ namespace image_processing_form
                 afterZoomMode();
                 afterBlackWhiteMode();
                 afterBrightnessMode();
+                afterBinarizeMode();
 
                 pictureBox.Image = imageBeforeMode;
                 Logger.Log("'MakeGray' fonksiyonu aktif.");
@@ -396,6 +421,58 @@ namespace image_processing_form
                 trackBar1.Maximum = 255;
 
                 trackBar1.Value = 0; // Mutlaka max ve minden sonra gelmeli
+                trackBar1.SmallChange = 10;
+                trackBar1.LargeChange = 10;
+                trackBar1.UseWaitCursor = false;
+                trackBar1.Visible = true;
+
+                imageBeforeMode = pictureBox.Image;
+
+                showControlButtons();
+            }
+        }
+
+        private void binarizeBtn_Click(object sender, EventArgs e)
+        {
+            //þimdi binarize fonksiyonunu yapýyordum
+            // farkettim ki bir hata var
+            // trackbar ý düzenlememiþim
+            // özellik eklerken trackbar ý düzenlemeyi unutmayýn !!!
+            if (isBinarizeMode)
+            {
+                afterBinarizeMode();
+                hideControlButtons();
+
+            }
+            else
+            {
+                // After fonksiyonlarý
+                afterBrightnessMode();
+                afterZoomMode();
+                afterBlackWhiteMode();
+                afterMakeGrayMode();
+                afterContrastMode();
+
+                pictureBox.Image = imageBeforeMode;
+                Logger.Log("'Binarize' fonksiyonu aktif.");
+
+                // State deðiþimleri
+                isContrastMode = false;
+                isCropMode = false;
+                isZoomMode = false;
+                isBrightnessMode = false;
+                isCropMode = false;
+                isCropMode = false;
+                isMakeGrayMode = false;
+                isBinarizeMode = true;
+                isCropMode = false;
+
+                // Max ve min deðerleri deðiþtirilebilir :).
+
+                trackBar1.Minimum = 1;
+                trackBar1.Maximum = 255;
+
+                trackBar1.Value = 100; // Mutlaka max ve minden sonra gelmeli ve ikisinin arasonda olmalý
                 trackBar1.SmallChange = 10;
                 trackBar1.LargeChange = 10;
                 trackBar1.UseWaitCursor = false;
@@ -514,6 +591,10 @@ namespace image_processing_form
             {
                 ImgProcess.proceesedNames.Add("Make Gray");
             }
+            else if (isBinarizeMode)
+            {
+                ImgProcess.proceesedNames.Add("Binarize");
+            }
 
 
             ImgProcess.processedImages.Add((Bitmap)pictureBox.Image);
@@ -538,6 +619,7 @@ namespace image_processing_form
             afterContrastMode();
             afterZoomMode();
             afterMakeGrayMode();
+            afterBinarizeMode();
 
             if (ImgProcess.processedImages.Count > 1)
             {
@@ -547,6 +629,8 @@ namespace image_processing_form
             MessageBox.Show("Applied.");
 
             CreateHistoryTiles();
+
+            ImgProcess.CalculteHistogram(histGraph, ref image);
 
             applyButton.Visible = false;
         }
@@ -567,9 +651,38 @@ namespace image_processing_form
 
             MessageBox.Show("Undo.");
 
+            ImgProcess.CalculteHistogram(histGraph, ref image);
+
             Control lastControl = historyPanel.Controls[historyPanel.Controls.Count - 1];
             historyPanel.Controls.Remove(lastControl);
             lastControl.Dispose();
+        }
+
+        private void histogramBtn_Click(object sender, EventArgs e)
+        {
+            if (isHistogramVisible)
+            {
+                histGraph.Visible = false;
+                isHistogramVisible = false;
+            }
+            else
+            {
+                histGraph.Visible = true;
+                isHistogramVisible = true;
+            }
+        }
+
+        private void cropBtn_Click(object sender, EventArgs e)
+        {
+            if (isCropMode)
+            {
+                isCropMode = false;
+                pictureBox.Refresh();
+            }
+            else
+            {
+                isCropMode = true;
+            }
         }
 
 
@@ -609,6 +722,15 @@ namespace image_processing_form
         {
             Logger.Log("'Contrast' fonksiyonu inaktif.");
             isContrastMode = false;
+            trackBar1.Visible = false;
+
+            pictureBox.Image = imageBeforeMode;
+        }
+
+        private void afterBinarizeMode()
+        {
+            Logger.Log("'Binarize' fonksiyonu inaktif.");
+            isBinarizeMode = false;
             trackBar1.Visible = false;
 
             pictureBox.Image = imageBeforeMode;
@@ -736,6 +858,8 @@ namespace image_processing_form
                     ImgProcess.processedImages.Add(selectedImage);
                     ImgProcess.proceesedNames.Add("Original");
                     CreateHistoryTiles();
+
+                    ImgProcess.CalculteHistogram(histGraph, ref image);
                 }
                 catch (Exception ex)
                 {
@@ -773,6 +897,6 @@ namespace image_processing_form
 
         }
 
-
+       
     }
 }
