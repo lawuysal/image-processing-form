@@ -30,6 +30,8 @@
         {
             pictureBox = new PictureBox();
             panel1 = new Panel();
+            multiplyBtn = new Button();
+            cropBtn = new Button();
             histogramBtn = new Button();
             binarizeBtn = new Button();
             makeGrayBtn = new Button();
@@ -50,7 +52,7 @@
             undoBtn = new Button();
             panel3 = new Panel();
             histGraph = new ScottPlot.WinForms.FormsPlot();
-            cropBtn = new Button();
+            addBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
@@ -77,6 +79,8 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(83, 83, 83);
+            panel1.Controls.Add(addBtn);
+            panel1.Controls.Add(multiplyBtn);
             panel1.Controls.Add(cropBtn);
             panel1.Controls.Add(histogramBtn);
             panel1.Controls.Add(binarizeBtn);
@@ -91,6 +95,26 @@
             panel1.Size = new Size(1265, 125);
             panel1.TabIndex = 3;
             // 
+            // multiplyBtn
+            // 
+            multiplyBtn.Location = new Point(760, 22);
+            multiplyBtn.Name = "multiplyBtn";
+            multiplyBtn.Size = new Size(94, 29);
+            multiplyBtn.TabIndex = 11;
+            multiplyBtn.Text = "Multiply";
+            multiplyBtn.UseVisualStyleBackColor = true;
+            multiplyBtn.Click += multiplyBtn_Click;
+            // 
+            // cropBtn
+            // 
+            cropBtn.Location = new Point(150, 22);
+            cropBtn.Name = "cropBtn";
+            cropBtn.Size = new Size(94, 29);
+            cropBtn.TabIndex = 10;
+            cropBtn.Text = "Crop";
+            cropBtn.UseVisualStyleBackColor = true;
+            cropBtn.Click += cropBtn_Click;
+            // 
             // histogramBtn
             // 
             histogramBtn.Location = new Point(35, 74);
@@ -103,7 +127,7 @@
             // 
             // binarizeBtn
             // 
-            binarizeBtn.Location = new Point(435, 74);
+            binarizeBtn.Location = new Point(405, 74);
             binarizeBtn.Name = "binarizeBtn";
             binarizeBtn.Size = new Size(94, 29);
             binarizeBtn.TabIndex = 8;
@@ -113,7 +137,7 @@
             // 
             // makeGrayBtn
             // 
-            makeGrayBtn.Location = new Point(557, 22);
+            makeGrayBtn.Location = new Point(571, 22);
             makeGrayBtn.Name = "makeGrayBtn";
             makeGrayBtn.Size = new Size(94, 29);
             makeGrayBtn.TabIndex = 7;
@@ -123,7 +147,7 @@
             // 
             // blackWhiteBtn
             // 
-            blackWhiteBtn.Location = new Point(557, 74);
+            blackWhiteBtn.Location = new Point(571, 74);
             blackWhiteBtn.Name = "blackWhiteBtn";
             blackWhiteBtn.Size = new Size(94, 29);
             blackWhiteBtn.TabIndex = 6;
@@ -133,7 +157,7 @@
             // 
             // contrastButton
             // 
-            contrastButton.Location = new Point(335, 22);
+            contrastButton.Location = new Point(305, 22);
             contrastButton.Name = "contrastButton";
             contrastButton.Size = new Size(94, 29);
             contrastButton.TabIndex = 5;
@@ -143,7 +167,7 @@
             // 
             // brightnessBtn
             // 
-            brightnessBtn.Location = new Point(335, 74);
+            brightnessBtn.Location = new Point(305, 74);
             brightnessBtn.Name = "brightnessBtn";
             brightnessBtn.Size = new Size(94, 29);
             brightnessBtn.TabIndex = 4;
@@ -293,15 +317,15 @@
             histGraph.Size = new Size(429, 322);
             histGraph.TabIndex = 9;
             // 
-            // cropBtn
+            // addBtn
             // 
-            cropBtn.Location = new Point(150, 22);
-            cropBtn.Name = "cropBtn";
-            cropBtn.Size = new Size(94, 29);
-            cropBtn.TabIndex = 10;
-            cropBtn.Text = "Crop";
-            cropBtn.UseVisualStyleBackColor = true;
-            cropBtn.Click += cropBtn_Click;
+            addBtn.Location = new Point(760, 74);
+            addBtn.Name = "addBtn";
+            addBtn.Size = new Size(94, 29);
+            addBtn.TabIndex = 12;
+            addBtn.Text = "Add";
+            addBtn.UseVisualStyleBackColor = true;
+            addBtn.Click += addBtn_Click;
             // 
             // Form1
             // 
@@ -356,5 +380,7 @@
         private ScottPlot.WinForms.FormsPlot histGraph;
         private Button histogramBtn;
         private Button cropBtn;
+        private Button multiplyBtn;
+        private Button addBtn;
     }
 }

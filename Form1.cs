@@ -21,7 +21,7 @@ namespace image_processing_form
         bool isHistogramVisible = false;
 
         Bitmap image = new Bitmap("image_2.jpg");
-        //Bitmap image2 = new Bitmap("image.jpg");
+
         // PictureBox üzerinde kýrpma yapýlacak alaný temsil eden dikdörtgenin boyutu ve konumu
         Point pDown = Point.Empty;
         Rectangle rect = Rectangle.Empty;
@@ -97,69 +97,6 @@ namespace image_processing_form
             }
         }
 
-        public void MultiplyImages(Bitmap image1, Bitmap image2)
-        {
-            Bitmap temp = (Bitmap)image1;
-            Bitmap bmap = (Bitmap)temp.Clone();
-            Bitmap temp2 = (Bitmap)image2;
-            Bitmap bmap2 = (Bitmap)temp2.Clone();
-            Color c;
-            for (int i = 0; i < bmap.Width; i++)
-            {
-                for (int j = 0; j < bmap.Height; j++)
-                {
-                    c = bmap.GetPixel(i, j);
-                    int cR = c.R * bmap2.GetPixel(i, j).R / 255;
-                    int cG = c.G * bmap2.GetPixel(i, j).G / 255;
-                    int cB = c.B * bmap2.GetPixel(i, j).B / 255;
-
-                    bmap.SetPixel(i, j, Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
-                }
-            }
-            pictureBox.Image = bmap;
-        }
-
-        public void AddImages(Bitmap image1, Bitmap image2)
-        {
-            Bitmap temp = (Bitmap)image1;
-            Bitmap bmap = (Bitmap)temp.Clone();
-            Bitmap temp2 = (Bitmap)image2;
-            Bitmap bmap2 = (Bitmap)temp2.Clone();
-            Color c;
-            for (int i = 0; i < bmap.Width; i++)
-            {
-                for (int j = 0; j < bmap.Height; j++)
-                {
-                    c = bmap.GetPixel(i, j);
-                    int cR = c.R + bmap2.GetPixel(i, j).R;
-                    int cG = c.G + bmap2.GetPixel(i, j).G;
-                    int cB = c.B + bmap2.GetPixel(i, j).B;
-
-                    if (cR > 255) cR = 255;
-                    if (cG > 255) cG = 255;
-                    if (cB > 255) cB = 255;
-
-                    bmap.SetPixel(i, j, Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
-                }
-            }
-            pictureBox.Image = bmap;
-        }
-
-
-        public void EqualImageDimensions(ref Bitmap image1, ref Bitmap image2)
-        {
-            int width = image1.Width;
-            int height = image1.Height;
-            if (image2.Width < width)
-                width = image2.Width;
-            if (image2.Height < height)
-                height = image2.Height;
-            image1 = new Bitmap(image1, new Size(width, height));
-            image2 = new Bitmap(image2, new Size(width, height));
-
-            pictureBox.Image = image2;
-        }
-
         private void pictureBox_Paint(object sender, PaintEventArgs e)
         {
             // Þimdilik Gereksiz
@@ -220,7 +157,7 @@ namespace image_processing_form
                 ImgProcess.CalculteHistogram(histGraph, ref image);
             }
 
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -571,6 +508,68 @@ namespace image_processing_form
 
         }
 
+        private void multiplyBtn_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Resim Dosyalarý|*.jpg;*.jpeg;*.png;*.gif;*.bmp|Tüm Dosyalar|*.*";
+
+            Bitmap selectedImage;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    selectedImage = new Bitmap(openFileDialog.FileName);
+                    ImgProcess.MultiplyImages(pictureBox, ref image, ref selectedImage);
+                    image = (Bitmap)pictureBox.Image;
+                    imageBeforeMode = image;
+                    ImgProcess.processedImages.Add((Bitmap)pictureBox.Image);
+                    ImgProcess.proceesedNames.Add("Multiply");
+                    CreateHistoryTiles();
+                    if (ImgProcess.processedImages.Count > 1)
+                    {
+                        undoBtn.Enabled = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Resim yüklenirken bir hata oluþtu: " + ex.Message);
+                    return;
+                }
+            }
+        }
+
+        private void addBtn_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Resim Dosyalarý|*.jpg;*.jpeg;*.png;*.gif;*.bmp|Tüm Dosyalar|*.*";
+
+            Bitmap selectedImage;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    selectedImage = new Bitmap(openFileDialog.FileName);
+                    ImgProcess.AddImages(pictureBox, ref image, ref selectedImage);
+                    image = (Bitmap)pictureBox.Image;
+                    imageBeforeMode = image;
+                    ImgProcess.processedImages.Add((Bitmap)pictureBox.Image);
+                    ImgProcess.proceesedNames.Add("Add");
+                    CreateHistoryTiles();
+                    if (ImgProcess.processedImages.Count > 1)
+                    {
+                        undoBtn.Enabled = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Resim yüklenirken bir hata oluþtu: " + ex.Message);
+                    return;
+                }
+            }
+        }
+
 
         private void applyButton_Click(object sender, EventArgs e)
         {
@@ -897,6 +896,6 @@ namespace image_processing_form
 
         }
 
-       
+        
     }
 }

@@ -203,7 +203,7 @@ namespace image_processing_form
         /// </summary>
         /// <param name="pictureBox">Görselin bulunduğu konteyner.</param>
         /// <param name="image">Üzerinde çalışılan görsel.</param>
-        /// <param name="treshold">Sınır değeri.</param>
+        /// <param name="threshold">Sınır değeri.</param>
         public static void Binarize(PictureBox pictureBox, ref Bitmap image, int threshold)
         {
             try
@@ -276,6 +276,12 @@ namespace image_processing_form
             }
         }
 
+        //Histogram fonksiyonu
+        /// <summary>
+        /// Görselin histogramını hesaplar ve görselleştirir.
+        /// </summary>
+        /// <param name="histGraph">Histogramın çizileceği grafik.</param>
+        /// <param name="image">Üzerinde çalışılan görsel.</param>
         public static void  CalculteHistogram(FormsPlot histGraph, ref Bitmap image)
         {
             // Histogram dizisi oluştur
@@ -309,6 +315,97 @@ namespace image_processing_form
 
             histGraph.Refresh();
 
+        }
+
+        //Multiply fonksiyonu
+        /// <summary>
+        /// İki görseli çarpar.
+        /// </summary>
+        /// <param name="pictureBox">Görselin bulunduğu konteyner.</param>
+        /// <param name="image1">Üzerinde çalışılan görsel.</param>
+        /// <param name="image2">Sonradan eklenen görsel.</param>
+        public static void MultiplyImages(PictureBox pictureBox, ref Bitmap image1, ref Bitmap image2)
+        {
+            Bitmap[] images = ImgProcess.EqualImageDimensions(ref image1, ref image2);
+            image1 = images[0];
+            image2 = images[1];
+
+            Bitmap temp = (Bitmap)image1;
+            Bitmap bmap = (Bitmap)temp.Clone();
+            Bitmap temp2 = (Bitmap)image2;
+            Bitmap bmap2 = (Bitmap)temp2.Clone();
+            Color c;
+            for (int i = 0; i < bmap.Width; i++)
+            {
+                for (int j = 0; j < bmap.Height; j++)
+                {
+                    c = bmap.GetPixel(i, j);
+                    int cR = c.R * bmap2.GetPixel(i, j).R / 255;
+                    int cG = c.G * bmap2.GetPixel(i, j).G / 255;
+                    int cB = c.B * bmap2.GetPixel(i, j).B / 255;
+
+                    bmap.SetPixel(i, j, Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
+                }
+            }
+            pictureBox.Image = bmap;
+        }
+
+        //Add fonksiyonu
+        /// <summary>
+        /// İki görseli toplar.
+        /// </summary>
+        /// <param name="pictureBox">Görselin bulunduğu konteyner.</param>
+        /// <param name="image1">Üzerinde çalışılan görsel.</param>
+        /// <param name="image2">Sonradan eklenen görsel.</param>
+        public static void AddImages(PictureBox pictureBox, ref Bitmap image1, ref Bitmap image2)
+        {
+            Bitmap[] images = ImgProcess.EqualImageDimensions(ref image1, ref image2);
+            image1 = images[0];
+            image2 = images[1];
+
+            Bitmap temp = (Bitmap)image1;
+            Bitmap bmap = (Bitmap)temp.Clone();
+            Bitmap temp2 = (Bitmap)image2;
+            Bitmap bmap2 = (Bitmap)temp2.Clone();
+            Color c;
+            for (int i = 0; i < bmap.Width; i++)
+            {
+                for (int j = 0; j < bmap.Height; j++)
+                {
+                    c = bmap.GetPixel(i, j);
+                    int cR = c.R + bmap2.GetPixel(i, j).R;
+                    int cG = c.G + bmap2.GetPixel(i, j).G;
+                    int cB = c.B + bmap2.GetPixel(i, j).B;
+
+                    if (cR > 255) cR = 255;
+                    if (cG > 255) cG = 255;
+                    if (cB > 255) cB = 255;
+
+                    bmap.SetPixel(i, j, Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
+                }
+            }
+            pictureBox.Image = bmap;
+        }
+
+        //Equal Image Dimensions fonksiyonu
+        /// <summary>
+        /// İki görselin boyutlarını büyük olana göre eşitler.
+        /// </summary>
+        /// <param name="image1">Üzerinde çalışılan görsel.</param>
+        /// <param name="image2">Üzerinde çalışılan görsel.</param>
+        /// <returns>Boyutları eşitlenmiş iki görsel.</returns>
+        public static Bitmap[] EqualImageDimensions(ref Bitmap image1, ref Bitmap image2)
+        {
+            int width = image1.Width;
+            int height = image1.Height;
+            if (image2.Width > width)
+                width = image2.Width;
+            if (image2.Height > height)
+                height = image2.Height;
+            image1 = new Bitmap(image1, new Size(width, height));
+            image2 = new Bitmap(image2, new Size(width, height));
+
+            return new Bitmap[] { image1, image2 };
         }
     }
 }
