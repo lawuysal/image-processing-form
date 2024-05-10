@@ -30,6 +30,9 @@
         {
             pictureBox = new PictureBox();
             panel1 = new Panel();
+            trackBar2 = new TrackBar();
+            shiftButton = new Button();
+            addBtn = new Button();
             multiplyBtn = new Button();
             cropBtn = new Button();
             histogramBtn = new Button();
@@ -52,9 +55,9 @@
             undoBtn = new Button();
             panel3 = new Panel();
             histGraph = new ScottPlot.WinForms.FormsPlot();
-            addBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             panel2.SuspendLayout();
             historyPanel.SuspendLayout();
@@ -79,6 +82,8 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(83, 83, 83);
+            panel1.Controls.Add(trackBar2);
+            panel1.Controls.Add(shiftButton);
             panel1.Controls.Add(addBtn);
             panel1.Controls.Add(multiplyBtn);
             panel1.Controls.Add(cropBtn);
@@ -94,6 +99,35 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1265, 125);
             panel1.TabIndex = 3;
+            // 
+            // trackBar2
+            // 
+            trackBar2.Location = new Point(959, 74);
+            trackBar2.Name = "trackBar2";
+            trackBar2.Size = new Size(275, 56);
+            trackBar2.TabIndex = 14;
+            trackBar2.Visible = false;
+            trackBar2.Scroll += trackBar2_Scroll;
+            // 
+            // shiftButton
+            // 
+            shiftButton.Location = new Point(150, 74);
+            shiftButton.Name = "shiftButton";
+            shiftButton.Size = new Size(94, 29);
+            shiftButton.TabIndex = 13;
+            shiftButton.Text = "Shift";
+            shiftButton.UseVisualStyleBackColor = true;
+            shiftButton.Click += shiftButton_Click;
+            // 
+            // addBtn
+            // 
+            addBtn.Location = new Point(760, 74);
+            addBtn.Name = "addBtn";
+            addBtn.Size = new Size(94, 29);
+            addBtn.TabIndex = 12;
+            addBtn.Text = "Add";
+            addBtn.UseVisualStyleBackColor = true;
+            addBtn.Click += addBtn_Click;
             // 
             // multiplyBtn
             // 
@@ -127,7 +161,7 @@
             // 
             // binarizeBtn
             // 
-            binarizeBtn.Location = new Point(405, 74);
+            binarizeBtn.Location = new Point(426, 74);
             binarizeBtn.Name = "binarizeBtn";
             binarizeBtn.Size = new Size(94, 29);
             binarizeBtn.TabIndex = 8;
@@ -137,7 +171,7 @@
             // 
             // makeGrayBtn
             // 
-            makeGrayBtn.Location = new Point(571, 22);
+            makeGrayBtn.Location = new Point(579, 22);
             makeGrayBtn.Name = "makeGrayBtn";
             makeGrayBtn.Size = new Size(94, 29);
             makeGrayBtn.TabIndex = 7;
@@ -147,7 +181,7 @@
             // 
             // blackWhiteBtn
             // 
-            blackWhiteBtn.Location = new Point(571, 74);
+            blackWhiteBtn.Location = new Point(579, 74);
             blackWhiteBtn.Name = "blackWhiteBtn";
             blackWhiteBtn.Size = new Size(94, 29);
             blackWhiteBtn.TabIndex = 6;
@@ -157,7 +191,7 @@
             // 
             // contrastButton
             // 
-            contrastButton.Location = new Point(305, 22);
+            contrastButton.Location = new Point(326, 22);
             contrastButton.Name = "contrastButton";
             contrastButton.Size = new Size(94, 29);
             contrastButton.TabIndex = 5;
@@ -167,7 +201,7 @@
             // 
             // brightnessBtn
             // 
-            brightnessBtn.Location = new Point(305, 74);
+            brightnessBtn.Location = new Point(326, 74);
             brightnessBtn.Name = "brightnessBtn";
             brightnessBtn.Size = new Size(94, 29);
             brightnessBtn.TabIndex = 4;
@@ -187,7 +221,7 @@
             // 
             // trackBar1
             // 
-            trackBar1.Location = new Point(956, 47);
+            trackBar1.Location = new Point(956, 22);
             trackBar1.Name = "trackBar1";
             trackBar1.Size = new Size(275, 56);
             trackBar1.TabIndex = 2;
@@ -317,16 +351,6 @@
             histGraph.Size = new Size(429, 322);
             histGraph.TabIndex = 9;
             // 
-            // addBtn
-            // 
-            addBtn.Location = new Point(760, 74);
-            addBtn.Name = "addBtn";
-            addBtn.Size = new Size(94, 29);
-            addBtn.TabIndex = 12;
-            addBtn.Text = "Add";
-            addBtn.UseVisualStyleBackColor = true;
-            addBtn.Click += addBtn_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -344,6 +368,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar2).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -382,5 +407,7 @@
         private Button cropBtn;
         private Button multiplyBtn;
         private Button addBtn;
+        private Button shiftButton;
+        private TrackBar trackBar2;
     }
 }

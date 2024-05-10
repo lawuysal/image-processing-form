@@ -264,10 +264,6 @@ namespace image_processing_form
                     }
                 }
                 pictureBox.Image = offsetBitmap;
-
-                //// History özelliği için gerekli.
-                //processedImages.Add(pictureBox.Image);
-                //proceesedNames.Add("Shifter: " + offsetX.ToString() + "; " + offsetY.ToString());
             }
             catch (Exception ex)
             {

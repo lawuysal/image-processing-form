@@ -71,22 +71,12 @@ namespace image_processing_form
 
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox.Image = image;
-            //ImgProcess.Shifter(pictureBox, ref image, 2000, 1800);
-            //ImgProcess.Brightness(pictureBox, ref image, 100);
-            //ImgProcess.BlackWhite(pictureBox, ref image);
-            //ImgProcess.Contrast(pictureBox, ref image, 50);
-            //ImgProcess.MakeGray(pictureBox, ref image); // 
-            //ImgProcess.Binarize(pictureBox, ref image, 100);
-            //EqualImageDimensionsAndPreventStrecthing(image2, image);
-            //EqualImageDimensions(ref image2, ref image);
-            ImgProcess.CalculteHistogram(histGraph, ref image);
-            //MultiplyImages(image, image);
         }
 
 
         private void PictureBox_MouseWheel(object? sender, MouseEventArgs e)
         {
-            // Check if Alt key is pressed and mouse wheel is scrolled down
+            // Þimdilik Gereksiz
             if (isAltKeyPressed && e.Delta < 0)
             {
 
@@ -108,6 +98,7 @@ namespace image_processing_form
             {
                 pDown = e.Location;
                 pictureBox.Refresh();
+                imageBeforeMode = pictureBox.Image;
             }
         }
 
@@ -121,13 +112,14 @@ namespace image_processing_form
                 using (Graphics g = pictureBox.CreateGraphics())
                 {
                     pictureBox.Refresh();
-                    g.DrawRectangle(Pens.Orange, rect);
+                    g.DrawRectangle(Pens.Red, rect);
                 }
             }
         }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
         {
+            
             if (isCropMode)
             {
                 Rectangle iR = ImageArea(pictureBox);
@@ -143,6 +135,7 @@ namespace image_processing_form
                 }
                 pictureBox.Image = bmp;
                 image = bmp;
+                imageBeforeMode = pictureBox.Image;
 
                 isCropMode = false;
                 ImgProcess.processedImages.Add((Bitmap)pictureBox.Image);
@@ -165,19 +158,6 @@ namespace image_processing_form
             pictureBox.Image = image;
         }
 
-
-
-        float GetFactor(PictureBox pBox)
-        {
-            if (pBox.Image == null) return 0;
-            Size si = pBox.Image.Size;
-            Size sp = pBox.ClientSize;
-            float ri = 1f * si.Width / si.Height;
-            float rp = 1f * sp.Width / sp.Height;
-            float factor = 1f * pBox.Image.Width / pBox.ClientSize.Width;
-            if (rp > ri) factor = 1f * pBox.Image.Height / pBox.ClientSize.Height;
-            return factor;
-        }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -224,6 +204,21 @@ namespace image_processing_form
             {
                 ImgProcess.Binarize(pictureBox, ref image, trackBar1.Value);
             }
+            else if (isShifterMode)
+            {
+                ImgProcess.Shifter(pictureBox, ref image, trackBar1.Value, trackBar2.Value);
+            }
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            if (isShifterMode)
+            {
+                if (trackBar1.Value != 0)
+                {
+                    ImgProcess.Shifter(pictureBox, ref image, trackBar1.Value, trackBar2.Value);
+                }
+            }
         }
 
         // Burasý biraz karýþýk. Pek ellememek lazým.
@@ -241,6 +236,7 @@ namespace image_processing_form
                 afterBrightnessMode();
                 afterContrastMode();
                 afterBlackWhiteMode();
+                afterShifterMode();
 
                 Logger.Log("'Zoom' fonksiyonu aktif.");
                 trackBar1.Minimum = 1;
@@ -258,6 +254,7 @@ namespace image_processing_form
                 isMakeGrayMode = false;
                 isBinarizeMode = false;
                 isCropMode = false;
+                isShifterMode = false;
 
                 imageBeforeMode = pictureBox.Image;
 
@@ -273,6 +270,65 @@ namespace image_processing_form
                 hideControlButtons();
             }
         }
+
+        private void shiftButton_Click(object sender, EventArgs e)
+        {
+            if (isShifterMode)
+            {
+                afterShifterMode();
+                hideControlButtons();
+            }
+            else
+            {
+                // After fonksiyonlarý
+                afterContrastMode();
+                afterZoomMode();
+                afterBlackWhiteMode();
+                afterBinarizeMode();
+                afterBrightnessMode();
+                afterMakeGrayMode();
+                afterShifterMode();
+
+                pictureBox.Image = imageBeforeMode;
+                Logger.Log("'Shift' fonksiyonu aktif.");
+
+                // State deðiþimleri için bir fonksiyon yazýlabilir.
+                // Ama þimdilik böyle çünkü yoruldum. Sabah oldu saat 5:35
+                isBrightnessMode = false;
+                isContrastMode = false;
+                isCropMode = false;
+                isZoomMode = false;
+                isCropMode = false;
+                isCropMode = false;
+                isMakeGrayMode = false;
+                isBinarizeMode = false;
+                isCropMode = false;
+                isShifterMode = true;
+
+
+                trackBar1.Minimum = 0;
+                trackBar1.Maximum = 2000;
+                trackBar2.Minimum = 0;
+                trackBar2.Maximum = 2000;
+
+
+                trackBar1.Value = 0; // Mutlaka max ve minden sonra gelmeli
+                trackBar2.Value = 0;
+                trackBar1.SmallChange = 10;
+                trackBar2.SmallChange = 10;
+                trackBar1.LargeChange = 10;
+                trackBar2.LargeChange = 10;
+                trackBar1.UseWaitCursor = false;
+                trackBar2.UseWaitCursor = false;
+                trackBar1.Visible = true;
+                trackBar2.Visible = true;
+
+                imageBeforeMode = pictureBox.Image;
+
+                showControlButtons();
+            }
+        }
+
         private void makeGrayBtn_Click(object sender, EventArgs e)
         {
             // þimdi test yapýyoruz
@@ -294,6 +350,7 @@ namespace image_processing_form
                 afterBlackWhiteMode();
                 afterBrightnessMode();
                 afterBinarizeMode();
+                afterShifterMode();
 
                 pictureBox.Image = imageBeforeMode;
                 Logger.Log("'MakeGray' fonksiyonu aktif.");
@@ -310,6 +367,7 @@ namespace image_processing_form
                 isMakeGrayMode = true;
                 isBinarizeMode = false;
                 isCropMode = false;
+                isShifterMode = false;
 
 
 
@@ -337,6 +395,7 @@ namespace image_processing_form
                 afterContrastMode();
                 afterZoomMode();
                 afterBlackWhiteMode();
+                afterShifterMode();
 
                 pictureBox.Image = imageBeforeMode;
                 Logger.Log("'Brightness' fonksiyonu aktif.");
@@ -352,6 +411,7 @@ namespace image_processing_form
                 isMakeGrayMode = false;
                 isBinarizeMode = false;
                 isCropMode = false;
+                isShifterMode = false;
 
 
                 trackBar1.Minimum = -255;
@@ -389,6 +449,7 @@ namespace image_processing_form
                 afterBlackWhiteMode();
                 afterMakeGrayMode();
                 afterContrastMode();
+                afterShifterMode();
 
                 pictureBox.Image = imageBeforeMode;
                 Logger.Log("'Binarize' fonksiyonu aktif.");
@@ -403,6 +464,7 @@ namespace image_processing_form
                 isMakeGrayMode = false;
                 isBinarizeMode = true;
                 isCropMode = false;
+                isShifterMode = false;
 
                 // Max ve min deðerleri deðiþtirilebilir :).
 
@@ -435,6 +497,7 @@ namespace image_processing_form
                 afterBrightnessMode();
                 afterZoomMode();
                 afterBlackWhiteMode();
+                afterShifterMode();
 
                 pictureBox.Image = imageBeforeMode;
                 Logger.Log("'Contrast' fonksiyonu aktif.");
@@ -449,6 +512,7 @@ namespace image_processing_form
                 isMakeGrayMode = false;
                 isBinarizeMode = false;
                 isCropMode = false;
+                isShifterMode = false;
 
                 // Max ve min deðerleri deðiþtirilebilir :).
 
@@ -484,6 +548,7 @@ namespace image_processing_form
                 afterBrightnessMode();
                 afterContrastMode();
                 afterZoomMode();
+                afterShifterMode();
 
                 pictureBox.Image = imageBeforeMode;
                 trackBar1.Visible = false;
@@ -594,6 +659,10 @@ namespace image_processing_form
             {
                 ImgProcess.proceesedNames.Add("Binarize");
             }
+            else if (isShifterMode)
+            {
+                ImgProcess.proceesedNames.Add("Shift");
+            }
 
 
             ImgProcess.processedImages.Add((Bitmap)pictureBox.Image);
@@ -619,6 +688,7 @@ namespace image_processing_form
             afterZoomMode();
             afterMakeGrayMode();
             afterBinarizeMode();
+            afterShifterMode();
 
             if (ImgProcess.processedImages.Count > 1)
             {
@@ -710,6 +780,16 @@ namespace image_processing_form
             pictureBox.Image = imageBeforeMode;
         }
 
+        private void afterShifterMode()
+        {
+            Logger.Log("'Shifter' fonksiyonu inaktif.");
+            isShifterMode = false;
+            trackBar1.Visible = false;
+            trackBar2.Visible = false;
+
+            pictureBox.Image = imageBeforeMode;
+        }
+
         private void afterMakeGrayMode()
         {
             Logger.Log("'MakeGray' fonksiyonu inaktif.");
@@ -757,6 +837,18 @@ namespace image_processing_form
         // Silersen uygulama çalýþmaz.
         // Puahahahhhaaa
         // Kýrpma ve zoom fonksiyonlarý için gerekli
+        float GetFactor(PictureBox pBox)
+        {
+            if (pBox.Image == null) return 0;
+            Size si = pBox.Image.Size;
+            Size sp = pBox.ClientSize;
+            float ri = 1f * si.Width / si.Height;
+            float rp = 1f * sp.Width / sp.Height;
+            float factor = 1f * pBox.Image.Width / pBox.ClientSize.Width;
+            if (rp > ri) factor = 1f * pBox.Image.Height / pBox.ClientSize.Height;
+            return factor;
+        }
+
         Image ZoomPicture(Image img, Size size)
         {
             Bitmap bmp = new Bitmap(img, Convert.ToInt32(img.Width * size.Width / 100), Convert.ToInt32(img.Height * size.Height / 100));
@@ -831,7 +923,6 @@ namespace image_processing_form
                 pnl.Controls.Add(lbl);
 
                 historyPanel.Controls.Add(pnl);
-
 
             }
 
