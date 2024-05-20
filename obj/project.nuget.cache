@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "FrZxbTzjD4k9+YOhocbNAYchpwzxJqiKYyRmKHWlmxJY9WloC15ThiXQAEe3qNf+ZRR4EZujhmbbnOzPKExpMw==",
+  "dgSpecHash": "dA0IS4YE68sxVMex+fOJb1xH3fFioMwaW+uNu/frBzgKzhWSddTU9BBhFdQyGjpnbO0M4/ghzK699a+Tu1pd8Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\raylaw\\Desktop\\Code\\Csh\\image-processing-form\\image-processing-form.csproj",
+  "projectFilePath": "D:\\DL2\\image-processing-form-final-v3\\image-processing-form.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\raylaw\\.nuget\\packages\\magick.net-q8-anycpu\\13.8.0\\magick.net-q8-anycpu.13.8.0.nupkg.sha512",
+    "C:\\Users\\raylaw\\.nuget\\packages\\magick.net.core\\13.8.0\\magick.net.core.13.8.0.nupkg.sha512",
     "C:\\Users\\raylaw\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.9\\microsoft.netcore.platforms.3.1.9.nupkg.sha512",
     "C:\\Users\\raylaw\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\raylaw\\.nuget\\packages\\opentk\\3.1.0\\opentk.3.1.0.nupkg.sha512",

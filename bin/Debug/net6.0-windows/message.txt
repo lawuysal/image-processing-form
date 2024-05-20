@@ -1,0 +1,120 @@
+ public static void ApplyBlurringFilter(PictureBox pBox, Bitmap imageToBeBlurred, int blurRadius)
+ {
+     Bitmap blurredImage = new Bitmap(imageToBeBlurred.Width, imageToBeBlurred.Height);
+
+     BitmapData lockedImageMap = imageToBeBlurred.LockBits(
+         new Rectangle(0, 0, imageToBeBlurred.Width, imageToBeBlurred.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+
+     BitmapData lockedBlurredImageMap = blurredImage.LockBits(
+         new Rectangle(0, 0, imageToBeBlurred.Width, imageToBeBlurred.Height), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
+
+     double[] blurKernel = GenerateDiskKernel(blurRadius); 
+     
+
+     try
+     {
+
+         unsafe
+         {
+
+             byte* imageStartingPoint = (byte*)lockedImageMap.Scan0;
+             byte* blurredImageStartingPoint = (byte*)lockedBlurredImageMap.Scan0;
+
+             for (int y = 0; y < imageToBeBlurred.Height; y++)
+             {
+                 for (int x = 0; x < imageToBeBlurred.Width; x++)
+                 {
+                     int totalRed = 0, totalGreen = 0, totalBlue = 0;
+                     int pixelCount = 0;
+                     for (int offsetX = -blurRadius; offsetX <= blurRadius; offsetX++)
+                     {
+                         for (int offsetY = -blurRadius; offsetY <= blurRadius; offsetY++)
+                         {
+                             int newX = Math.Min(Math.Max(x + offsetX, 0), imageToBeBlurred.Width - 1);
+                             int newY = Math.Min(Math.Max(y + offsetY, 0), imageToBeBlurred.Height - 1);
+
+                             byte* curPixel = imageStartingPoint + lockedImageMap.Stride * newY + 3 * newX;
+                             totalRed += (int)(curPixel[2] * blurKernel[pixelCount]);
+                             totalGreen += (int)(curPixel[1] * blurKernel[pixelCount]);
+                             totalBlue += (int)(curPixel[0] * blurKernel[pixelCount]);
+                             pixelCount++;
+                         }
+                     }
+
+                     byte* newPixel = blurredImageStartingPoint + lockedBlurredImageMap.Stride * y + 3 * x;
+                     newPixel[0] = (byte)(totalBlue);
+                     newPixel[1] = (byte)(totalGreen);
+                     newPixel[2] = (byte)(totalRed);
+
+                 }
+
+             }
+
+         }
+
+     }
+     catch (Exception ex)
+     {
+         MessageBox.Show("'ApplyBlurringFilter' fonksiyonu çalışırken hata meydana geldi: " + ex.Message);
+         Logger.Log("'ApplyBlurringFilter' fonksiyonu çalışırken hata meydana geldi: " + ex.Message);
+     }
+
+      imageToBeBlurred.UnlockBits(lockedImageMap);
+         blurredImage.UnlockBits(lockedBlurredImageMap);
+
+     pBox.Image = blurredImage;
+
+ }
+
+ private static double[] GenerateDiskKernel(int radius)
+ {
+     int size = radius * 2 + 1;
+     double[,] kernel = new double[size, size];
+     double sum = 0.0;
+     int center = radius;
+
+     for (int y = 0; y < size; y++)
+     {
+         for (int x = 0; x < size; x++)
+         {
+             double distance = Math.Sqrt((x - center) * (x - center) + (y - center) * (y - center));
+             if (distance <= radius)
+             {
+                 kernel[y, x] = 1.0;
+                 sum += 1.0;
+             }
+             else
+             {
+                 kernel[y, x] = 0.0;
+             }
+         }
+     }
+
+     // Normalize the kernel
+     for (int y = 0; y < size; y++)
+     {
+         for (int x = 0; x < size; x++)
+         {
+             kernel[y, x] /= sum;
+         }
+     }
+
+     double[] sequenced = SequenceDiskKernel(kernel, size);
+
+     return sequenced;
+ }
+
+ private static double[] SequenceDiskKernel(double[,] kernel,int size)
+ {
+     double[] sequencedKernel = new double[size*size];
+     int count = 0;
+     for(int i = 0; i < size; i++)
+     {
+         for(int j = 0; j < size; j++)
+         {
+             sequencedKernel[count++] = kernel[i, j];
+         }
+     }
+
+     return sequencedKernel;
+ }

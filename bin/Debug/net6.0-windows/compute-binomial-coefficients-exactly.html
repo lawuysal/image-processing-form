@@ -1,0 +1,1213 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Compute Binomial Coefficients Exactly
+- MATLAB &amp; Simulink Example</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="canonical" href="https://www.mathworks.com/help/symbolic/compute-binomial-coefficients-exactly.html" />
+<link rel="stylesheet" href="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/core.min.20230428200114579.css" type="text/css">
+<link rel="stylesheet" href="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common.min.20230428200114579.css" type="text/css">
+<link rel="stylesheet" href="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/footer.min.20230428200114579.css" type="text/css">
+<link href="/includes_content/responsive/css/site6_offcanvas_v2.css?202403" rel="stylesheet" type="text/css">
+<!-- CRUX 2.0 -->
+<link href="/includes_content/responsive/css/site7_crux.css?202403" rel="stylesheet" type="text/css">
+<script src="/includes_content/responsive/scripts/jquery/jquery-3.6.0.min.js?202403"></script>
+<script src="/includes_content/responsive/scripts/jquery/jquery-migrate.min.js?202403"></script>
+<script src="/includes_content/responsive/scripts/bootstrap/bootstrap.min.js?202403"></script>
+<script src="/includes_content/responsive/scripts/global.js?202403"></script>
+<script src="/etc.clientlibs/mathworks/clientlibs/customer-ui/components/webvitals.min.20230428200114579.js"></script>
+<!-- BEGIN Adobe DTM -->
+<script>(function(g,b,d,f){(function(a,c,d){if(a){var e=b.createElement("style");e.id=c;e.innerHTML=d;a.appendChild(e)}})(b.getElementsByTagName("head")[0],"at-body-style",d);setTimeout(function(){var a=b.getElementsByTagName("head")[0];if(a){var c=b.getElementById("at-body-style");c&&a.removeChild(c)}},f)})(window,document,"[class*='personalization-container']:not([id^='web-application']) {opacity: 0 !important}",2E3);</script>
+<script src="//assets.adobedtm.com/d0cc0600946eb3957f703b9fe43c3590597a8c2c/satelliteLib-e8d23c2e444abadc572df06537e2def59c01db09.js" async></script>
+<!-- END Adobe DTM -->
+<link href="/includes_content/releases/R2024a/css/doc_center.css?202403" rel="stylesheet" type="text/css">
+<link href="/includes_content/releases/R2024a/css/doc_center_print.css?202403" rel="stylesheet" type="text/css" media="print">
+<script src="/includes_content/releases/R2024a/scripts/matlab_dialog.js?202403"></script>
+<script src="/help/releases/R2024a/includes/web/scripts/livecontrolpopoverhandler.js?202403"></script>
+<script src="/help/releases/R2024a/includes/web/scripts/livetaskpopoverhandler.js?202403"></script>
+<script src="https://matlab.mathworks.com/open/openwith.js?202403"></script>
+<style>
+.examples_short_list a.btn {display: none;}
+</style>
+<script src="https://www.mathworks.com/help/includes/web/scripts//openInBrowser.js"></script>
+<link href="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/fonts/roboto/roboto-latin-italic-400.20230428200114579.woff2" rel="preload" as="font" type="font/woff2" crossorigin/>
+<link href="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/fonts/roboto/roboto-latin-italic-500.20230428200114579.woff2" rel="preload" as="font" type="font/woff2" crossorigin/>
+<link href="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/fonts/roboto/roboto-latin-italic-700.20230428200114579.woff2" rel="preload" as="font" type="font/woff2" crossorigin/>
+<link href="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/fonts/roboto/roboto-latin-normal-400.20230428200114579.woff2" rel="preload" as="font" type="font/woff2" crossorigin/>
+<link href="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/fonts/roboto/roboto-latin-normal-500.20230428200114579.woff2" rel="preload" as="font" type="font/woff2" crossorigin/>
+<link href="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/fonts/roboto/roboto-latin-normal-700.20230428200114579.woff2" rel="preload" as="font" type="font/woff2" crossorigin/>
+<link href="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/fonts/mathworks.20230428200114579.woff" rel="preload" as="font" type="font/woff" crossorigin/>
+<script xmlns="http://www.w3.org/1999/xhtml" type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "BreadcrumbList",
+"itemListElement":
+[{
+"@type": "ListItem",
+"position": 1,
+"item": {
+"@id": "index.html",
+"name": "Symbolic Math Toolbox"
+}
+}
+,
+{
+"@type": "ListItem",
+"position": 2,
+"item": {
+"@id": "symbolic-computations-in-matlab.html",
+"name": "Symbolic Computations in MATLAB"
+}
+}
+,
+{
+"@type": "ListItem",
+"position": 3,
+"item": {
+"@id": "conversion.html",
+"name": "Conversion Between Symbolic and Numeric"
+}
+}]
+}</script><script xmlns="http://www.w3.org/1999/xhtml" type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "BreadcrumbList",
+"itemListElement":
+[{
+"@type": "ListItem",
+"position": 1,
+"item": {
+"@id": "index.html",
+"name": "Symbolic Math Toolbox"
+}
+}
+,
+{
+"@type": "ListItem",
+"position": 2,
+"item": {
+"@id": "mathematics.html",
+"name": "Mathematics"
+}
+}
+,
+{
+"@type": "ListItem",
+"position": 3,
+"item": {
+"@id": "numbers-and-precision.html",
+"name": "Numbers and Precision"
+}
+}]
+}</script><script xmlns="http://www.w3.org/1999/xhtml" type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "ItemList",
+"name": "VisibleBreadcrumbs",
+"itemListElement":
+[
+"conversion",
+"numbers-and-precision"
+],
+"itemListOrder": "http://schema.org/ItemListOrderAscending"
+}
+</script><script xmlns="http://www.w3.org/1999/xhtml" type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "DigitalDocument",
+"headline": "Compute Binomial Coefficients Exactly",
+"description": "Get precise values for binomial coefficients and find probabilities in coin-tossing experiments using the Symbolic Math Toolbox&#8482;.",
+"thumbnailURL": "../examples/symbolic/win64/BinomialCoefficientExample_02.png",
+"genre": "Live Script",
+"isBasedOn": {
+"@type": "Product",
+"name": "MATLAB"
+},
+"identifier": "symbolic.BinomialCoefficientExample",
+"name": "BinomialCoefficientExample",
+"url": "compute-binomial-coefficients-exactly.html"
+}</script><script xmlns="http://www.w3.org/1999/xhtml" type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "PropertyValue",
+"name": "open_command",
+"value": "matlab:openExample('symbolic/BinomialCoefficientExample')"
+}</script><script xmlns="http://www.w3.org/1999/xhtml" type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "ItemList",
+"name": "ExampleSourceFiles",
+"itemListElement":
+[
+"BinomialCoefficientExample.mlx"
+],
+"itemListOrder": "http://schema.org/ItemListOrderAscending"
+}
+</script>
+<meta xmlns="http://www.w3.org/1999/xhtml" http-equiv="Content-Script-Type" content="text/javascript">
+<meta xmlns="http://www.w3.org/1999/xhtml" name="toctype" itemprop="pagetype" content="fe">
+<meta xmlns="http://www.w3.org/1999/xhtml" name="infotype" itemprop="infotype" content="ex">
+<meta xmlns="http://www.w3.org/1999/xhtml" name="description" itemprop="description" content="This example shows how to get precise values for binomial coefficients and find probabilities in coin-tossing experiments using the Symbolic Math Toolbox&#8482;."><meta xmlns="http://www.w3.org/1999/xhtml" content="../examples/symbolic/win64/BinomialCoefficientExample_02.png" itemprop="thumbnailUrl">
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/l10n.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/docscripts.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/f1help.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/mw.toc_2.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/mw.imagescaling.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/mw.imageanimation.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/mw.breadcrumb.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/jquery.highlight.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/product/scripts/underscore-min.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/web/scripts/doc_omniture.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/overload.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/helpservices.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/product/scripts/productfilter.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/product_group.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/scripts/saxonjs/SaxonJS2.rt.js?202403071441"></script>
+<script xmlns="http://www.w3.org/1999/xhtml">
+window.history.replaceState(window.location.href, null, ""); // Initialize
+document.addEventListener('DOMContentLoaded', function() {
+mystylesheetLocation = "/help/releases/R2024a/includes/shared/scripts/product_group-sef.json";
+mysourceLocation = "/help/releases/R2024a/docset.xml";
+product_help_location = "symbolic";
+pagetype = "section";
+doccentertype = "web";
+langcode = "";
+getProductFilteredList(mystylesheetLocation, mysourceLocation, product_help_location, pagetype, doccentertype, langcode);
+});
+</script>
+<!-- Additions/overrides from the doc side -->
+<style>
+.typeahead_container.typeahead_type_grouped { margin-left:0; }
+@media (min-width:768px) {
+#suggestions { margin-left:-100px }
+}
+</style>
+<script type="text/javascript" src="/help/search/R2024a/helpcenter_docsearch.js?20200128"></script>
+<script type="text/javascript" src="/includes_content/nextgen/scripts/jquery/jquery.toggleval.js?201409291140"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="/help/releases/R2024a/includes/shared/equationrenderer/release/MathRenderer.js"></script>
+<script type="text/javascript" src="/includes_content/nextgen/scripts/jquery/jquery.cookie.js"></script>
+<script type="text/javascript" src="/includes_content/domainSelect/akamai-country-code.js"></script>
+<script type="text/javascript">
+var domainCountryCodeMap = new Map();
+var countryCodeToDomainMap = new Map();
+domainCountryCodeMap.set('www.mathworks.com', 'www');
+countryCodeToDomainMap.set('www','www.mathworks.com')
+domainCountryCodeMap.set('www.mathworks.com', 'www');
+countryCodeToDomainMap.set('www','www.mathworks.com')
+domainCountryCodeMap.set('la.mathworks.com', 'la');
+countryCodeToDomainMap.set('la','la.mathworks.com')
+domainCountryCodeMap.set('au.mathworks.com', 'au');
+countryCodeToDomainMap.set('au','au.mathworks.com')
+domainCountryCodeMap.set('de.mathworks.com', 'de');
+countryCodeToDomainMap.set('de','de.mathworks.com')
+domainCountryCodeMap.set('nl.mathworks.com', 'nl');
+countryCodeToDomainMap.set('nl','nl.mathworks.com')
+domainCountryCodeMap.set('ww2.mathworks.cn', 'ww2');
+countryCodeToDomainMap.set('ww2','ww2.mathworks.cn')
+domainCountryCodeMap.set('se.mathworks.com', 'se');
+countryCodeToDomainMap.set('se','se.mathworks.com')
+domainCountryCodeMap.set('se.mathworks.com', 'se');
+countryCodeToDomainMap.set('se','se.mathworks.com')
+domainCountryCodeMap.set('fr.mathworks.com', 'fr');
+countryCodeToDomainMap.set('fr','fr.mathworks.com')
+domainCountryCodeMap.set('de.mathworks.com', 'de');
+countryCodeToDomainMap.set('de','de.mathworks.com')
+domainCountryCodeMap.set('in.mathworks.com', 'in');
+countryCodeToDomainMap.set('in','in.mathworks.com')
+domainCountryCodeMap.set('uk.mathworks.com', 'uk');
+countryCodeToDomainMap.set('uk','uk.mathworks.com')
+domainCountryCodeMap.set('it.mathworks.com', 'it');
+countryCodeToDomainMap.set('it','it.mathworks.com')
+domainCountryCodeMap.set('jp.mathworks.com', 'jp');
+countryCodeToDomainMap.set('jp','jp.mathworks.com')
+domainCountryCodeMap.set('kr.mathworks.com', 'kr');
+countryCodeToDomainMap.set('kr','kr.mathworks.com')
+domainCountryCodeMap.set('nl.mathworks.com', 'nl');
+countryCodeToDomainMap.set('nl','nl.mathworks.com')
+domainCountryCodeMap.set('nl.mathworks.com', 'nl');
+countryCodeToDomainMap.set('nl','nl.mathworks.com')
+domainCountryCodeMap.set('au.mathworks.com', 'au');
+countryCodeToDomainMap.set('au','au.mathworks.com')
+domainCountryCodeMap.set('se.mathworks.com', 'se');
+countryCodeToDomainMap.set('se','se.mathworks.com')
+domainCountryCodeMap.set('www.mathworks.com', 'www');
+countryCodeToDomainMap.set('www','www.mathworks.com')
+domainCountryCodeMap.set('es.mathworks.com', 'es');
+countryCodeToDomainMap.set('es','es.mathworks.com')
+domainCountryCodeMap.set('se.mathworks.com', 'se');
+countryCodeToDomainMap.set('se','se.mathworks.com')
+domainCountryCodeMap.set('ch.mathworks.com', 'ch');
+countryCodeToDomainMap.set('ch','ch.mathworks.com')
+domainCountryCodeMap.set('uk.mathworks.com', 'uk');
+countryCodeToDomainMap.set('uk','uk.mathworks.com')
+var countrySubdomains = {
+US: {name: 'United States', subdomain: 'www'},
+AD: {name: 'Andorra', subdomain: 'es'},
+AR: {name: 'Argentina', subdomain: 'la'},
+AU: {name: 'Australia', subdomain: 'au'},
+AT: {name: 'Austria', subdomain: 'de'},
+BE: {name: 'Belgium', subdomain: 'nl'},
+BO: {name: 'Bolivia', subdomain: 'la'},
+BV: {name: 'Bouvet Islands', subdomain: 'se'},
+CA: {name: 'Canada', subdomain: 'www'},
+CL: {name: 'Chile', subdomain: 'la'},
+CN: {name: 'China', subdomain: 'cn'},
+CX: {name: 'Christmas Island', subdomain: 'au'},
+CC: {name: 'Cocos-Keeling Islands', subdomain: 'au'},
+CO: {name: 'Colombia', subdomain: 'la'},
+CR: {name: 'Costa Rica', subdomain: 'la'},
+DK: {name: 'Denmark', subdomain: 'se'},
+DO: {name: 'Dominican Republic', subdomain: 'la'},
+EC: {name: 'Ecuador', subdomain: 'la'},
+SV: {name: 'El Salvador', subdomain: 'la'},
+EE: {name: 'Estonia', subdomain: 'se'},
+FO: {name: 'Faroe Islands', subdomain: 'se'},
+FJ: {name: 'Fiji', subdomain: 'au'},
+FI: {name: 'Finland', subdomain: 'se'},
+FR: {name: 'France', subdomain: 'fr'},
+GF: {name: 'French Guiana', subdomain: 'fr'},
+PF: {name: 'French Polynesia', subdomain: 'fr'},
+DE: {name: 'Germany', subdomain: 'de'},
+GL: {name: 'Greenland', subdomain: 'se'},
+GP: {name: 'Guadalupe', subdomain: 'fr'},
+GT: {name: 'Guatemala', subdomain: 'la'},
+HN: {name: 'Honduras', subdomain: 'la'},
+HK: {name: 'Hong Kong', subdomain: 'cn'},
+IS: {name: 'Iceland', subdomain: 'se'},
+IN: {name: 'India', subdomain: 'in'},
+IE: {name: 'Ireland', subdomain: 'uk'},
+IT: {name: 'Italy', subdomain: 'it'},
+JP: {name: 'Japan', subdomain: 'jp'},
+KR: {name: 'Korea', subdomain: 'kr'},
+LV: {name: 'Latvia', subdomain: 'se'},
+LI: {name: 'Liechtenstein', subdomain: 'ch'},
+LT: {name: 'Lithuania', subdomain: 'se'},
+LU: {name: 'Luxembourg', subdomain: 'nl'},
+MO: {name: 'Macau', subdomain: 'cn'},
+MQ: {name: 'Martinique', subdomain: 'fr'},
+YT: {name: 'Mayotte Island', subdomain: 'fr'},
+MX: {name: 'Mexico', subdomain: 'la'},
+MC: {name: 'Monaco', subdomain: 'fr'},
+NL: {name: 'Netherlands', subdomain: 'nl'},
+NC: {name: 'New Caledonia', subdomain: 'fr'},
+NZ: {name: 'New Zealand', subdomain: 'au'},
+NI: {name: 'Nicaragua', subdomain: 'la'},
+NO: {name: 'Norway', subdomain: 'se'},
+PA: {name: 'Panama', subdomain: 'la'},
+PG: {name: 'Papua New Guinea', subdomain: 'au'},
+PY: {name: 'Paraguay', subdomain: 'la'},
+PE: {name: 'Peru', subdomain: 'la'},
+PT: {name: 'Portugal', subdomain: 'www'},
+PR: {name: 'Puerto Rico', subdomain: 'la'},
+RE: {name: 'Reunion Island', subdomain: 'fr'},
+ES: {name: 'Spain', subdomain: 'es'},
+LK: {name: 'Sri Lanka', subdomain: 'in'},
+SE: {name: 'Sweden', subdomain: 'se'},
+CH: {name: 'Switzerland', subdomain: 'ch'},
+GB: {name: 'United Kingdom', subdomain: 'uk'},
+UY: {name: 'Uruguay', subdomain: 'la'},
+VA: {name: 'Vatican City', subdomain: 'it'},
+VE: {name: 'Venezuela', subdomain: 'la'},
+};
+var domainUtils = {
+isExemptUrl: function (url) {
+if(window.overrideDomainSelector){
+return true;
+}
+var exemptions = [
+'/api/parts/',
+'nocookie=true',
+'client=addons',
+'requestedDomain'
+];
+return exemptions.some(function (exemption) {
+return url.indexOf(exemption) != -1;
+});
+},
+endsWith: function( str, suffix ) {
+return str.substring( str.length - suffix.length, str.length ) === suffix;
+},
+getDomain: function (url) {
+var segments = url.split('/');
+return segments[2];
+},
+getSubdomain: function (domain) {
+return domainCountryCodeMap.get(domain);
+},
+setCookies: function (domain, lang) {
+var domainCookie = 'mathworks.com';
+if (this.endsWith(location.host, 'mathworks.cn')) {
+domainCookie = 'mathworks.cn';
+}
+var selectedSubdomain = this.getSubdomain(domain);
+if (this.endsWith(domain, 'mathworks.cn')) {
+selectedSubdomain = 'cn';
+}
+if (selectedSubdomain === 'www') {
+// This is what ePS did in EQUUS and Ruby, so...
+// we're just following suit.
+selectedSubdomain = 'us';
+}
+if (selectedSubdomain !== 'cn' && selectedSubdomain !== 'ch') {
+lang = '';
+}
+var cookieNames = this.getCookieNames(domain);
+var expires = new Date();
+expires.setFullYear(expires.getFullYear() + 68);
+var myJSON = JSON.stringify({
+domain: selectedSubdomain,
+lang: lang,
+v: 2
+});
+$.cookie(cookieNames.mwaPrefsCookieName, myJSON, {path: '/', expires: 20*365, domain: domainCookie});
+},
+getCookieNames: function (domain) {
+var mwaLoginCookieName = 'mwa';
+var mwaPrefsCookieName = 'mwa_prefs';
+var subdomainSuffix = '';
+if (subdomainSuffix != "") {
+mwaLoginCookieName = mwaLoginCookieName + subdomainSuffix;
+mwaPrefsCookieName = mwaPrefsCookieName + subdomainSuffix;
+}
+return {
+mwaLoginCookieName: mwaLoginCookieName,
+mwaPrefsCookieName: mwaPrefsCookieName,
+};
+},
+switchDomain: function (targetDomain, targetLang) {
+var targetUri = location.pathname;
+targetLang = this.getValidLang(this.getSubdomain(targetDomain), targetLang);
+var url = '//' + targetDomain;
+url += targetUri + location.search;
+url = url.replace(/requestedDomain=[a-z]?[a-z]?&?/, '');
+url = url.replace(/\&$/, '');
+url = url.replace(/\?$/, '');
+var requestedDomainParam = 'requestedDomain=' + targetLang;
+if (url.indexOf('?') > -1) {
+url = url + '&' + requestedDomainParam;
+} else {
+url = url + '?' + requestedDomainParam;
+}
+window.location = url;
+},
+getPrefCookie: function(currentDomain) {
+var cookieNames = this.getCookieNames(currentDomain);
+// regex from: https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
+var cookieRegex = new RegExp("(?:(?:^|.*;\\s*)"+cookieNames.mwaPrefsCookieName+"\\s*\\=\\s*([^;]*).*$)|^.*$");
+if (document.cookie) {
+var cookieValue = document.cookie.replace(cookieRegex, "$1");
+if (cookieValue) {
+return JSON.parse(decodeURIComponent(cookieValue));
+}
+}
+return "";
+},
+getPrefDomain: function (currentDomain) {
+var mwaPrefsCookieJsonObject = this.getPrefCookie(currentDomain);
+var visitorPrefDomain;
+if (!!mwaPrefsCookieJsonObject) {
+visitorPrefDomain = mwaPrefsCookieJsonObject.domain;
+if (visitorPrefDomain === 'us') {
+visitorPrefDomain = 'www';
+}else if (visitorPrefDomain === 'cn') {
+visitorPrefDomain = 'ww2';
+}
+}
+return countryCodeToDomainMap.get(visitorPrefDomain);
+},
+getPrefLang: function (currentDomain) {
+var mwaPrefsCookieJsonObject = this.getPrefCookie(currentDomain);
+var multilingualDomainLanguageSupport = {};
+multilingualDomainLanguageSupport['ch'] = ['en','de','fr'];
+multilingualDomainLanguageSupport['cn'] = ['zh','en'];
+var currentDomainLangOptions = multilingualDomainLanguageSupport[mwaPrefsCookieJsonObject.domain];
+if (currentDomainLangOptions) {
+var cookiePrefLang = mwaPrefsCookieJsonObject.lang;
+if (currentDomainLangOptions.indexOf(cookiePrefLang) >= 0) {
+return cookiePrefLang;
+} else {
+return currentDomainLangOptions[0];
+}
+}
+return '';
+},
+getCookieVersion: function (currentDomain) {
+var mwaPrefsCookieJsonObject = this.getPrefCookie(currentDomain);
+return mwaPrefsCookieJsonObject.v;
+},
+getTargetDomainForCookies: function() {
+var targetDomain = "";
+if (this.endsWith(location.host, 'mathworks.cn')) {
+targetDomain = window.location.protocol + "//" + countryCodeToDomainMap.get('www');
+}else{
+targetDomain = window.location.protocol + "//" + countryCodeToDomainMap.get('ww2');
+}
+return targetDomain;
+},
+getValidLang: function (subdomain, lang) {
+var multilingualDomainLanguageSupport = {};
+multilingualDomainLanguageSupport['ch'] = ['en','de','fr'];
+multilingualDomainLanguageSupport['cn'] = ['zh','en'];
+multilingualDomainLanguageSupport['ww2'] = ['zh','en'];
+var currentDomainLangOptions = multilingualDomainLanguageSupport[subdomain];
+if (currentDomainLangOptions) {
+if (currentDomainLangOptions.indexOf(lang) >= 0) {
+return lang;
+} else {
+return currentDomainLangOptions[0];
+}
+}
+return '';
+},
+isDefaultLang: function (subdomain, lang) {
+var multilingualDomainLanguageDefault = {};
+multilingualDomainLanguageDefault['ch'] = 'en';
+multilingualDomainLanguageDefault['cn'] = 'zh';
+multilingualDomainLanguageDefault['ww2'] = 'zh';
+var currentDomainLang = multilingualDomainLanguageDefault[subdomain];
+if (currentDomainLang) {
+if (currentDomainLang === lang) {
+return true;
+} else {
+return false;
+}
+} else if (lang) {
+return false;
+}
+return true;
+}
+};
+$(window).on('load', function() {
+var currentUrl = window.location.href;
+var currentDomain = domainUtils.getDomain(currentUrl);
+var currentSubdomain = domainUtils.getSubdomain(currentDomain);
+var requestedDomainLangRegEx = RegExp('[?&]requestedDomain=([^&]*)').exec(window.location.search);
+if (requestedDomainLangRegEx) {
+var setLang = domainUtils.getValidLang(currentSubdomain, requestedDomainLangRegEx[1])
+domainUtils.setCookies(currentDomain, setLang);
+var URLWithoutRequestedDomain = window.location.href.replace(/requestedDomain=[a-z]?[a-z]?&?/, '');
+URLWithoutRequestedDomain = URLWithoutRequestedDomain.replace(/\&$/, '');
+URLWithoutRequestedDomain = URLWithoutRequestedDomain.replace(/\?$/, '');
+history.replaceState({}, document.title, URLWithoutRequestedDomain);
+window.location = URLWithoutRequestedDomain;
+}
+$('body').on('click', '.domain_selector_link', function (e) {
+e.preventDefault();
+var selectedDomain = domainUtils.getDomain(this.href);
+var selectedLang = $(this).data('lang');
+domainUtils.setCookies(selectedDomain, selectedLang);
+domainUtils.switchDomain(selectedDomain, selectedLang);
+});
+var currentCountryText =
+$('a[data-subdomain=\'' + currentSubdomain + '\'][data-default-lang=\'true\'][data-selected-text]')
+.data('selected-text');
+$('#countrySelectorButtonText').text(currentCountryText);
+var visitorPrefDomain = domainUtils.getPrefDomain(currentDomain);
+var visitorPrefLang = domainUtils.getPrefLang(currentDomain);
+var akamaiCountryCode;
+var akamaiprofile = CQ_Analytics.ClientContextMgr.getRegisteredStore('akamaiprofile');
+if (akamaiprofile) {
+akamaiCountryCode = akamaiprofile.getProperty('countryCode');
+}
+var recommendedSubdomain;
+var recommendedLink;
+if (akamaiCountryCode) {
+if (countrySubdomains[akamaiCountryCode] !== undefined) {
+recommendedSubdomain = countrySubdomains[akamaiCountryCode].subdomain;
+} else {
+recommendedSubdomain = 'www';
+}
+if (recommendedSubdomain === 'us') {
+recommendedSubdomain = 'www';
+}else if (recommendedSubdomain === 'cn') {
+recommendedSubdomain = 'ww2';
+}
+recommendedLink = $('a[data-subdomain=\'' + recommendedSubdomain + '\'][data-recommended-text]');
+var countryButtons;
+if(recommendedSubdomain === 'ch') {
+countryButtons = $('.ch-recommendation .recommendation-button');
+$('.ch-recommendation').show();
+$('.zh-recommendation').hide();
+$('.default-recommendation').hide();
+} else if(recommendedSubdomain === 'ww2') {
+countryButtons = $('.zh-recommendation .recommendation-button');
+$('.zh-recommendation').show();
+$('.ch-recommendation').hide();
+$('.default-recommendation').hide();
+}
+} else if (visitorPrefDomain) {
+recommendedSubdomain = domainUtils.getSubdomain(visitorPrefDomain);
+recommendedLink = $('a[data-subdomain=\'' + recommendedSubdomain + '\'][data-recommended-text]');
+var countryButtons;
+if(recommendedSubdomain === 'ch') {
+countryButtons = $('.ch-recommendation .recommendation-button');
+$('.ch-recommendation').show();
+$('.zh-recommendation').hide();
+$('.default-recommendation').hide();
+} else if(recommendedSubdomain === 'ww2') {
+countryButtons = $('.zh-recommendation .recommendation-button');
+$('.zh-recommendation').show();
+$('.ch-recommendation').hide();
+$('.default-recommendation').hide();
+}
+}
+if (!recommendedLink) {
+recommendedSubdomain = 'www';
+recommendedLink = $('a[data-subdomain=\'' + recommendedSubdomain + '\'][data-recommended-text]');
+}
+$('.recommended-country').text(recommendedLink.data('recommended-text'));
+$('#recommended_domain_button').attr('href', recommendedLink.attr('href'));
+$('#recommended_domain_button').attr('data-lang', recommendedLink.attr('data-lang'));
+if(countryButtons !== undefined) {
+countryButtons.click(function(e) {
+e.preventDefault();
+var selectedDomain = domainUtils.getDomain(this.href);
+var selectedLang = $(this).data('lang');
+domainUtils.setCookies(selectedDomain, selectedLang);
+domainUtils.switchDomain(selectedDomain, selectedLang);
+});
+} else {
+var recommendedDomainButton = $('#recommended_domain_button');
+$('.recommended-country-button').text(recommendedLink.data('recommended-text'));
+recommendedDomainButton.attr('href', recommendedLink.attr('href'));
+recommendedDomainButton.data('lang', recommendedLink.data('lang'));
+recommendedDomainButton.click(function (e) {
+e.preventDefault();
+var selectedDomain = domainUtils.getDomain(this.href);
+var selectedLang = $(this).data('lang');
+domainUtils.setCookies(selectedDomain, selectedLang);
+domainUtils.switchDomain(selectedDomain, selectedLang);
+});
+}
+$('a.worldwide_link').attr('href', recommendedLink.attr('href'));
+$('a.worldwide_link').data('lang', recommendedLink.data('lang'));
+$('body').on('click', 'a.worldwide_link', function (e) {
+e.preventDefault();
+var selectedDomain = domainUtils.getDomain(this.href);
+var selectedLang = $(this).data('lang');
+domainUtils.setCookies(selectedDomain, selectedLang);
+var href = e.target.getAttribute('href');
+var worldwideLink = '/company/worldwide.html?s_tid=dmselect_cta&requestedDomain=';
+if(href) {
+location.href = href + worldwideLink;
+}
+});
+if (akamaiCountryCode === 'CN') {
+$('#china_performance_alert').show();
+}
+var crossDomain = "";
+if(domainUtils.endsWith(currentDomain, '.mathworks.cn')){
+crossDomain = countryCodeToDomainMap.get('www');
+}else{
+crossDomain = countryCodeToDomainMap.get('ww2');
+}
+if ((!domainUtils.endsWith(currentDomain, '.mathworks.com') && !domainUtils.endsWith(currentDomain, '.mathworks.cn')) || domainUtils.isExemptUrl(currentUrl)) {
+return;
+}
+if (!visitorPrefDomain) {
+if (akamaiCountryCode) {
+if (countrySubdomains[akamaiCountryCode] !== undefined) {
+akamaiCountryCode = countrySubdomains[akamaiCountryCode].subdomain;
+} else {
+akamaiCountryCode = 'us';
+}
+var akamaiDeterminedSubdomain = $('a[data-country-code=\'' + akamaiCountryCode.toUpperCase() + '\']').data('subdomain');
+if ((akamaiCountryCode.toLowerCase() === currentSubdomain) || (akamaiDeterminedSubdomain === currentSubdomain)) {
+domainUtils.setCookies(currentDomain, "");
+} else {
+$('#country-unselected').modal('show');
+}
+return;
+}
+if (currentSubdomain === 'www') {
+domainUtils.setCookies(currentDomain, '');
+} else {
+$('#country-unselected').modal('show');
+}
+} else if (akamaiCountryCode === 'CN' && !(visitorPrefDomain === 'CN') && !domainUtils.getCookieVersion(currentDomain)) {
+$('#country-unselected').modal('show');
+}
+});
+</script> <script src="/includes_content/responsive/scripts/mwa/global_nav.js"></script>
+
+                              <script>!function(a){var e="https://s.go-mpulse.net/boomerang/",t="addEventListener";if("False"=="True")a.BOOMR_config=a.BOOMR_config||{},a.BOOMR_config.PageParams=a.BOOMR_config.PageParams||{},a.BOOMR_config.PageParams.pci=!0,e="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="LERXA-6VNES-W6PXS-U8C7F-BXSZH",function(){function n(e){a.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!a.BOOMR||!a.BOOMR.version&&!a.BOOMR.snippetExecuted){a.BOOMR=a.BOOMR||{},a.BOOMR.snippetExecuted=!0;var i,_,o,r=document.createElement("iframe");if(a[t])a[t]("load",n,!1);else if(a.attachEvent)a.attachEvent("onload",n);r.src="javascript:void(0)",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="width:0;height:0;border:0;display:none;",o=document.getElementsByTagName("script")[0],o.parentNode.insertBefore(r,o);try{_=r.contentWindow.document}catch(O){i=document.domain,r.src="javascript:var d=document.open();d.domain='"+i+"';void(0);",_=r.contentWindow.document}_.open()._l=function(){var a=this.createElement("script");if(i)this.domain=i;a.id="boomr-if-as",a.src=e+"LERXA-6VNES-W6PXS-U8C7F-BXSZH",BOOMR_lstart=(new Date).getTime(),this.body.appendChild(a)},_.write("<bo"+'dy onload="document._l();">'),_.close()}}(),"".length>0)if(a&&"performance"in a&&a.performance&&"function"==typeof a.performance.setResourceTimingBufferSize)a.performance.setResourceTimingBufferSize();!function(){if(BOOMR=a.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var e=""=="true"?1:0,t="",n="jvb427yccxxgazskcdza-f-3b2268a36-clientnsv4-s.akamaihd.net",i="false"=="true"?2:1,_={"ak.v":"37","ak.cp":"1460359","ak.ai":parseInt("195948",10),"ak.ol":"0","ak.cr":35,"ak.ipv":4,"ak.proto":"h2","ak.rid":"41d66bc3","ak.r":35508,"ak.a2":e,"ak.m":"x","ak.n":"essl","ak.bpcip":"77.67.205.0","ak.cport":5219,"ak.gh":"2.20.134.221","ak.quicv":"","ak.tlsv":"tls1.3","ak.0rtt":"","ak.csrc":"-","ak.acc":"","ak.t":"1716130034","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==xK/066DkosGMiOFcbhnxXu4JsHDFTYLQzd3bZRaah1Z3+xPUnF7qxEplwsNcSKZEJ8jsBsOoB4ElGLTEsQNWEx1pGUGFT781dmlvCot9PqUAKYnJYx7NmYNEqHXxoZ4UvexUXaBo29BzNLcQEUUof2RdGlraOBPHeEDaN/1s1PQm+QTGATuQTNYbEwFzCqZhbEvIIpDyBffSttW4DiGZ5Kvay8PTkVxb4PUnE/Yl01LKpHV4H2SFmCnltabG+0e5dEnayCg+vT1H1MdvZprO8nyWhSJmqa/DCpTqL6gWjJDbtjkmGgq5vmxdlX9MLvy5Zq5P5DPBvbfSe4+VvvViTogwca8wdq77+Q+4fiKpT4f0Fdul9VqjIfUX4Tz/HI9V5Vf04uLoMVy07JMXu6ozk329mANzk8soift70MlUxM0=","ak.pv":"182","ak.dpoabenc":"","ak.tf":i};if(""!==t)_["ak.ruds"]=t;var o={i:!1,av:function(e){var t="http.initiator";if(e&&(!e[t]||"spa_hard"===e[t]))_["ak.feo"]=void 0!==a.aFeoApplied?1:0,BOOMR.addVar(_)},rv:function(){var a=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.r","ak.acc","ak.t","ak.tf"];BOOMR.removeVar(a)}};BOOMR.plugins.AK={akVars:_,akDNSPreFetchDomain:n,init:function(){if(!o.i){var a=BOOMR.subscribe;a("before_beacon",o.av,null,null),a("onbeacon",o.rv,null,null),o.i=!0}return this},is_complete:function(){return!0}}}}()}(window);</script><script nonce="881645b09cf7798b84fd48c3917df23d">bazadebezolkohpepadr="1429418460"</script><script type="text/javascript" src="https://www.mathworks.com/akam/13/553331a5" nonce="881645b09cf7798b84fd48c3917df23d" defer></script></head>
+
+<body id="responsive_offcanvas">
+  <a class="skip_link sr-only" href="#skip_link_anchor">Skip to content</a>
+
+  <!-- Mobile TopNav: Start -->
+<div class="header visible-xs visible-sm" id="header_mobile" translate="no">
+<nav class="navbar navbar-default" role="navigation">
+<div class="navbar-header">
+<div class="container-fluid">
+<div class="row">
+<div class="col-xs-3">
+<button type="button" class="navbar-toggle topnav_toggle" data-toggle="collapse" data-target="#topnav_collapse">
+<span class="sr-only">Toggle Main Navigation</span>
+<span class="icon-menu"></span>
+</button>
+</div>
+<div class="col-xs-6">
+<div class="text-center">
+<a href="https://www.mathworks.com?s_tid=gn_logo" class="svg_link navbar-brand">
+<img src="/images/responsive/global/pic-header-mathworks-logo.svg" class="mw_logo" alt="MathWorks">
+</a>
+</div>
+</div>
+<div class="col-xs-3">
+<div class="matrix_affordance_container_mobile" id="matrix_affordance_container_mobile"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid">
+<div class="row visible-xs visible-sm">
+<div class="col-xs-12">
+<div class="navbar-collapse collapse" id="topnav_collapse">
+<ul class="nav navbar-nav topnav" id="topnav_mobile">
+<li class="topnav_products "><a href="https://www.mathworks.com/products.html?s_tid=gn_ps" >Products</a></li>
+<li class="topnav_solutions "><a href="https://www.mathworks.com/solutions.html?s_tid=gn_sol">Solutions</a></li>
+<li class="topnav_academia "><a href="https://www.mathworks.com/academia.html?s_tid=gn_acad">Academia</a></li>
+<li class="topnav_support "><a href="https://www.mathworks.com/help/?s_tid=gn_supp">Support</a></li>
+<li class="topnav_community "><a href="https://www.mathworks.com/matlabcentral/?s_tid=gn_mlc">Community</a></li>
+<li class="topnav_events "><a href="https://www.mathworks.com/company/events.html?s_tid=gn_ev">Events</a></li>
+<li class="headernav_store"><a href="https://login.mathworks.com/embedded-login/landing.html?cid=getmatlab&s_tid=gn_getml">MATLAB</a></li>
+</ul>
+</div>
+<div class="navbar-collapse collapse" id="matrix_collapse">
+<div class="matrix_menu_container_mobile" id="matrix_menu_container_mobile"></div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+</div>
+<!-- Mobile TopNav: End -->
+<!-- Desktop TopNav: Start -->
+<div class="header hidden-xs hidden-sm" id="header_desktop" translate="no">
+<nav class="navbar navbar-default" role="navigation">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-9">
+<div class="navbar-header">
+<div class="logo_container hidden-xs hidden-sm">
+<a href="https://www.mathworks.com?s_tid=gn_logo" class="svg_link pull-left">
+<img src="/images/responsive/global/pic-header-mathworks-logo.svg" class="mw_logo" alt="MathWorks">
+</a>
+</div>
+<div class="navbar-collapse collapse hidden-xs hidden-sm">
+<ul class="nav navbar-nav topnav" id="topnav_desktop">
+<li class="topnav_products "><a href="https://www.mathworks.com/products.html?s_tid=gn_ps" >Products</a></li>
+<li class="topnav_solutions "><a href="https://www.mathworks.com/solutions.html?s_tid=gn_sol">Solutions</a></li>
+<li class="topnav_academia "><a href="https://www.mathworks.com/academia.html?s_tid=gn_acad">Academia</a></li>
+<li class="topnav_support "><a href="https://www.mathworks.com/help/?s_tid=gn_supp">Support</a></li>
+<li class="topnav_community "><a href="https://www.mathworks.com/matlabcentral/?s_tid=gn_mlc">Community</a></li>
+<li class="topnav_events "><a href="https://www.mathworks.com/company/events.html?s_tid=gn_ev">Events</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-3">
+<div class="collapse navbar-collapse" id="headernav_collapse">
+<ul class="nav navbar-nav navbar-right" id="headernav">
+<li class="headernav_store"><a href="https://login.mathworks.com/embedded-login/landing.html?cid=getmatlab&s_tid=gn_getml" class="btn btn_color_blue companion_btn btn-xs">MATLAB</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</nav>
+</div>
+<!-- Desktop TopNav: End -->
+<!-- Conjoined Header: Start -->
+<!-- Section Header: Start -->
+<div class="section_header level_3">
+<div class="container-fluid">
+<div class="row" id="mobile_search_row">
+<div class="col-sm-6 col-md-7 has_horizontal_local_nav" id="section_header_title">
+<div class="section_header_content">
+<div class="section_header_title">
+<p class="h1"><a xmlns="http://www.w3.org/1999/xhtml" href="../index.html" class="coming_from_product">Help Center</a><a xmlns="http://www.w3.org/1999/xhtml" href="../index.html" class="not_coming_from_product">Help Center</a></p>
+</div>
+</div>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-5" id="mobile_search">
+<div class="search_nested_content_container">
+<div id="search_scope_support" class="collapse in"> <form id="docsearch_form" action="/support/search.html" method="get" accept-charset="utf-8" data-release="R2024a" data-language="en">
+<div class="input-group">
+<label class="sr-only">Search Help Center</label>
+<input id="suggestion" type="hidden" name="suggestion" value="">
+<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+<input id="docsearch" class="form-control conjoined_search" type="search" name="q" placeholder="Search Help Center" autocomplete="off">
+<div class="input-group-btn">
+<button type="button" class="btn btn_search_adjacent dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Search Scope"><span class="caret"></span><span class="search_scope_label">Help Center</span></button>
+<ul class="dropdown-menu list-unstyled dropdown-menu-right" role="menu">
+<!--<li data-toggle="collapse" data-target="#search_scope_support"><a href="#">Support</a></li>-->
+<li data-target="#search_scope_support" class="site_search_scope_trigger"><a href="#">Help Center</a></li>
+<li data-target="#search_scope_site" class="support_search_scope_trigger"><a href="#">MathWorks</a></li>
+</ul>
+<button type="submit" name="submitsearch" id="support_submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16"></button>
+</div>
+</div>
+</form>
+</div>
+<div id="search_scope_site" class="collapse"> <form name="search" id="site_search" class="site_search" action="/search/site_search.html" method="get">
+<div class="input-group">
+<label class="sr-only">Search MathWorks.com</label>
+<input type="hidden" name="c[]" value="entire_site">
+<input type="search" name="q" id="query" class="form-control conjoined_search" placeholder="Search MathWorks.com" autocomplete="off">
+<div class="input-group-btn">
+<button type="button" class="btn btn_search_adjacent dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Search Scope"><span class="caret"></span><span class="search_scope_label">MathWorks</span></button>
+<ul class="dropdown-menu list-unstyled dropdown-menu-right" role="menu">
+<li data-target="#search_scope_site" class="support_search_scope_trigger"><a href="#">MathWorks</a></li>
+<li data-target="#search_scope_support" class="site_search_scope_trigger"><a href="#">Help Center</a></li>
+</ul>
+<button type="submit" id="searchbutton" class="btn icon-search btn_search_adjacent btn_search icon_16"></button>
+</div>
+</div>
+</form>
+</div>
+<script>
+$('[id*="search_scope"] li[class*="scope_trigger"] a').click(function() {
+var selected_search = $(this).closest('li').attr('data-target');
+var current_search_form = '#' + $(this).closest('form').attr('id');
+if ($(current_search_form + ' .conjoined_search').val()) {
+var current_search_value = $(current_search_form + ' .conjoined_search').val();
+$(selected_search + ' .conjoined_search').val(current_search_value);
+}
+$('[id*="search_scope"]').removeClass("in");
+$(selected_search).addClass("in");
+});
+</script>
+</div>
+<button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"><span class="sr-only">Close Mobile Search</span></button>
+</div>
+<div class="visible-xs" id="search_actuator">
+<button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"><span class="sr-only">Open Mobile Search</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Section Header: End -->
+<!-- Conjoined Header: End -->
+
+  <div class="row-offcanvas row-offcanvas-left">
+  
+    <div class="sidebar-offcanvas" id="sidebar">
+      <nav class="offcanvas_nav" role="navigation"> 
+      
+        <div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle">
+          <button type="button" class="btn">
+            <span class="icon-menu"><span class="sr-only">Off-Canvas Navigation Menu Toggle</span></span>
+          </button>
+          <span class="offcanvas_actuator_label" id="translation_icon-menu" tabindex="-1" aria-hidden="true"></span>
+          <!-- <span class="offcanvas_actuator_close" tabindex="-1" aria-hidden="true"></span> -->
+        </div>
+
+          <div class="nav_list_wrapper" id="nav_list_wrapper">
+            <nav class="offcanvas_nav" role="navigation">
+                <ul xmlns="http://www.w3.org/1999/xhtml" class="nav_breadcrumb" id="ul_left_nav_ancestors"><li itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb" itemprop="breadcrumb"><a href="../index.html?s_tid=CRUX_lftnav" itemprop="url"><span itemprop="title">Documentation Home</span></a></li></ul><ul xmlns="http://www.w3.org/1999/xhtml" class="nav_breadcrumb" id="ul_left_nav_productgroups"><li itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb" itemprop="breadcrumb"><a href="../overview/mathematics-and-optimization.html?s_tid=hc_product_group_bc" itemprop="url"><span itemprop="title">Mathematics and Optimization</span></a></li></ul>
+<ul xmlns="http://www.w3.org/1999/xhtml" class="nav_disambiguation"><li><a href="index.html?s_tid=CRUX_lftnav" id="index">Symbolic Math Toolbox</a>
+</li>
+<li itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb" itemprop="breadcrumb"><a href="symbolic-computations-in-matlab.html?s_tid=CRUX_lftnav" itemprop="url"><span itemprop="title">Symbolic Computations in MATLAB</span></a></li><li itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb" itemprop="breadcrumb"><a href="conversion.html?s_tid=CRUX_lftnav" itemprop="url" id="btgyshe-1"><span itemprop="title">Conversion Between Symbolic and Numeric</span></a></li></ul><ul xmlns="http://www.w3.org/1999/xhtml" class="nav_disambiguation"><li><a href="index.html?s_tid=CRUX_lftnav" id="index">Symbolic Math Toolbox</a>
+</li>
+<li><a href="mathematics.html?s_tid=CRUX_lftnav">Mathematics</a></li><li><a href="numbers-and-precision.html?s_tid=CRUX_lftnav" id="btgypv3-1">Numbers and Precision</a></li></ul><ul xmlns="http://www.w3.org/1999/xhtml" class="nav_scrollspy nav" id="pnav">
+<li class="nav_scrollspy_function"><a href="#responsive_offcanvas">Compute Binomial Coefficients Exactly</a></li>
+</ul>
+
+            </nav>
+          </div>
+        
+        <script src="/includes_content/responsive/scripts/offcanvas_v2.js?20221031"></script>
+        
+
+      </nav>       
+    </div>
+
+    <!-- MOBILE CTA - Begin -->
+    <!-- MOBILE CTA - End -->
+
+
+    <div class="offcanvas_content_container">
+
+      <div class="sticky_header_container">
+        <div class="horizontal_nav">
+          <div class="horizontal_nav_container">
+            <div class="offcanvas_horizontal_nav">
+              <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12 col-md-7 col-lg-8 hidden-xs">
+                    
+                    <script>
+                      var translateMore = translateMore || {};
+                      translateMore.locale = "More"; 
+                    </script>
+
+                    <nav class="navbar navbar-default" role="navigation" id="subnav">
+                      <div>
+                          <ul class="nav navbar-nav crux_browse">
+                        <li xmlns="http://www.w3.org/1999/xhtml" id="crux_nav_documentation" class="crux_resource active">Documentation</li><li xmlns="http://www.w3.org/1999/xhtml" id="crux_nav_example" class="crux_resource"><a href="examples.html?category=conversion&amp;s_tid=CRUX_topnav">Examples</a></li><li xmlns="http://www.w3.org/1999/xhtml" id="crux_nav_function" class="crux_resource"><a href="referencelist.html?type=function&amp;category=conversion&amp;s_tid=CRUX_topnav">Functions</a></li><li xmlns="http://www.w3.org/1999/xhtml" id="crux_nav_videos" class="supplemental_crux_resource"><a href="/support/search.html?fq[]=asset_type_name:video%20category:symbolic/conversion&amp;s_tid=CRUX_topnav" class="not_coming_from_product">Videos</a></li><li xmlns="http://www.w3.org/1999/xhtml" id="crux_nav_answers" class="supplemental_crux_resource"><a href="/support/search.html?fq[]=asset_type_name:answer%20category:symbolic/conversion&amp;s_tid=CRUX_topnav" class="not_coming_from_product">Answers</a></li>
+                        </ul>
+                      </div>
+                    </nav>
+                  </div>
+                    <div class="col-md-5 col-lg-4 hidden-xs hidden-sm">
+                      <div class="cta_box">
+<ul class="list-inline">
+<li class="cta_item cta_item_general hidden-sm hidden-xs "><a href="/campaigns/products/trials.html?prodcode=SM&amp;s_tid=doc_trial_SM_tb" class="icon-download">Trial Software</a></li>
+<li class="hidden-lg hidden-md "><a href="/campaigns/products/trials.html?prodcode=SM&amp;s_tid=doc_trial_SM_tb" class="btn btn_color_blue btn-block"><span class="icon-download"></span> Trial Software</a></li>
+<li class="cta_item cta_item_general hidden-sm hidden-xs "><a href="/support/web_downloads_bounce.html?s_tid=hc_prod_update&s_cid=1008_degr_docdn_270055" class="icon-download">Product Updates</a></li>
+<li class="hidden-lg hidden-md "><a href="/support/web_downloads_bounce.html?s_tid=hc_prod_update&s_cid=1008_degr_docdn_270055" class="btn btn_color_blue btn-block"><span class="icon-download"></span> Product Updates</a></li>
+</ul>
+</div>
+                    </div>
+                  <!-- Mobile CRUX Nav: START -->
+                  <div class="visible-xs">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col-xs-9"> 
+                          <div class="mobile_crux_nav_trigger">
+                            <!-- Single button -->
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Resources <span class="icon-arrow-down icon_16"></span>  
+                              </button>
+                              <ul class="dropdown-menu">
+                                <li xmlns="http://www.w3.org/1999/xhtml" id="crux_nav_documentation" class="crux_resource active">Documentation</li><li xmlns="http://www.w3.org/1999/xhtml" id="crux_nav_example" class="crux_resource"><a href="examples.html?category=conversion&amp;s_tid=CRUX_topnav">Examples</a></li><li xmlns="http://www.w3.org/1999/xhtml" id="crux_nav_function" class="crux_resource"><a href="referencelist.html?type=function&amp;category=conversion&amp;s_tid=CRUX_topnav">Functions</a></li><li xmlns="http://www.w3.org/1999/xhtml" id="crux_nav_videos" class="supplemental_crux_resource"><a href="/support/search.html?fq[]=asset_type_name:video%20category:symbolic/conversion&amp;s_tid=CRUX_topnav" class="not_coming_from_product">Videos</a></li><li xmlns="http://www.w3.org/1999/xhtml" id="crux_nav_answers" class="supplemental_crux_resource"><a href="/support/search.html?fq[]=asset_type_name:answer%20category:symbolic/conversion&amp;s_tid=CRUX_topnav" class="not_coming_from_product">Answers</a></li>
+                              </ul>
+                            </div>
+                            <!-- Single button -->                      
+                          </div>
+                        </div>
+                        <div class="col-xs-3">
+                          <div class="translate_placeholder"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Mobile CRUX Nav: END -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content_container" id="content_container">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12">
+              <div id="offcanvas_focus_actuator" tabindex="0" class="visible-xs"><span class="sr-only">Main Content</span></div>
+              <main id="skip_link_anchor" tabindex="-1">
+                           
+
+
+
+
+
+                         
+    
+                                       
+<div xmlns="http://www.w3.org/1999/xhtml" id="product_info_alert"></div><section xmlns="http://www.w3.org/1999/xhtml" id="doc_center_content" itemprop="content" lang="en" data-language="en"><div id="pgtype-example">
+<section itemprop="content"><div class="example_icon"></div><h1 class="r2024a" itemprop="title content" id="example-ex74660035">Compute Binomial Coefficients Exactly</h1><div class="examples_short_list hidden_ios_android" data-products="ML SM"><div data-pane="metadata" class="panel metadata_container panel-default"><div class="panel-body metadata_content"><a class="btn btn_secondary btn-block" href="matlab:openExample('symbolic/BinomialCoefficientExample')" data-ex-genre="Live Script">Open Live Script</a></div></div></div><div itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage/Example" itemprop="example" class="em_example"><meta itemprop="exampleid" content="symbolic-BinomialCoefficientExample"><meta itemprop="exampletitle" content="Compute Binomial Coefficients Exactly"></div><span id="BinomialCoefficientExample" class="anchor_target"></span><p class="shortdesc">This example shows how to get precise values for binomial coefficients and find probabilities in coin-tossing experiments using the Symbolic Math Toolbox&#8482;.</p><div class="informalfigure"><div id="d126e15047" class="mediaobject"><p><img src="../examples/symbolic/win64/BinomialCoefficientExample_01.png" height="183" width="223"></p></div></div><p>Define the symbolic function, <code class="literal">P(n,k)</code>, that computes the probability for the heads to come up exactly <code class="literal">k</code> times out of <code class="literal">n</code> tosses.</p><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>syms <span style="color:#A020F0">P(n,k)</span>
+P(n,k) = nchoosek(n,k)/2^n</pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeoutput"><pre>P(n, k) =&nbsp;
+<div class="code_responsive"><p class="programlistingindent"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mfrac><mrow><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>n</mi></mrow><mrow><mi>k</mi></mrow></mfrac><mo>)</mo></mrow></mrow><mrow><msup><mrow><mn>2</mn></mrow><mrow><mi>n</mi></mrow></msup></mrow></mfrac></mrow></math></p></div></pre></div></div></div><p>Suppose you toss a coin 2000 times. The probability that heads comes up in half of the tosses is <code class="literal">P(n, n/2)</code>, where <code class="literal">n = 2000</code>. The result is a rational expression with large numbers in both the numerator and denominator. Symbolic Math Toolbox returns the exact result.</p><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>n = 2000;
+central = P(n, n/2)</pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeoutput"><pre>central =&nbsp;
+<div class="code_responsive"><p class="programlistingindent"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mfrac><mrow><mn>32002369171710776786486914109075391318694138874709328653443478713621065409407558684827078034103284471897886973749969120193991903093820699875281992965144712165047076509911260111695492561758070504338841970553054102523110527916947524131958377752151574039949033529629698641642258743674137482616594745112267898723211120807230664634964544481708164904539022478043973711723559968194432939075806832004291061158908846856838256381803348565279054224647900810699299168867139792956844223922159175515314010713665400039460923455955238336479045124093228963670382989157970254873535474101598330561111077761468187361705</mn></mrow><mrow><mn>1793954211366022694113801876840128100034871409513586250746316776290259783425578615401030447369541046747571819748417910583511123376348523955353017744010395602173906080395504375010762174191250701116076984219741972574712741619474818186676828531882286780795390571221287481389759837587864244524002565968286448146002639202882164150037179450123657170327105882819203167448541028601906377066191895183769810676831353109303069033234715310287563158747705988305326397404720186258671215368588625611876280581509852855552819149745718992630449787803625851701801184123166018366180137512856918294030710215034138299203584</mn></mrow></mfrac></mrow></math></p></div></pre></div></div></div><p>Approximate this rational number with 10-digit accuracy using <code class="literal">digits</code> and <code class="literal">vpa</code>.</p><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>previous_digits = digits(10);
+vpa(central)</pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeoutput"><pre>ans =&nbsp;<span class="inlineequation"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mn>0.01783901115</mn></mrow></math></span></pre></div></div></div><p>Compute the probability that the number of "heads" differs from the expected value by no more than two standard deviations.</p><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>sigma = sqrt(n/4);
+withinTwoSigma = symsum(P(n, k), k, ceil(n/2 - 2*sigma), floor(n/2 + 2*sigma))</pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeoutput"><pre>withinTwoSigma =&nbsp;
+<div class="code_responsive"><p class="programlistingindent"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mfrac><mrow><mn>13683524663950565202894406832034749167239195904700934509667499858152527897032069211850781661943643686282416047513902767700103665665029054355840533069770903613738888071669349116690583596172679994408914739469288147903344743192436900584208366363134639060412272154615888058996878504469159837490119929044635173623899567959606687166441101852938440464197469845620102647004097663706638689504581437246132580182642373508676411344773424174011370403072385575195256474333714117110163049724001591393837741984544130975094551036065813178506167596616648110323149974640910169291651187202789267792477594694973714115343465</mn></mrow><mrow><mn>14351633690928181552910415014721024800278971276108690005970534210322078267404628923208243578956328373980574557987343284668088987010788191642824141952083164817391248643164035000086097393530005608928615873757935780597701932955798545493414628255058294246363124569770299851118078700702913956192020527746291585168021113623057313200297435600989257362616847062553625339588328228815251016529535161470158485414650824874424552265877722482300505269981647906442611179237761490069369722948709004895010244652078822844422553197965751941043598302429006813614409472985328146929441100102855346352245681720273106393628672</mn></mrow></mfrac></mrow></math></p></div></pre></div></div></div><p>Approximate the result with a floating-point number.</p><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>vpa(withinTwoSigma)</pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeoutput"><pre>ans =&nbsp;<span class="inlineequation"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mn>0.9534471795</mn></mrow></math></span></pre></div></div></div><p>Compare this result with the following two estimates derived from the cumulative distribution function (cdf) of the normal distribution. It turns out that taking the midpoint between the first integer outside and the first integer inside the two-sigma interval gives a more precise result than using the two-sigma interval itself.</p><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>syms <span style="color:#A020F0">cdf(x)</span>
+cdf(x) = 1/2 * (1 + erf((x - n/2)/sqrt(sym(n/2))))</pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeoutput"><pre>cdf(x) =&nbsp;
+<div class="code_responsive"><p class="programlistingindent"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mrow><mrow><mfrac><mrow><mrow><mrow><mi>erf</mi></mrow><mrow><mo>(</mo><mrow><mrow><mfrac><mrow><mrow><mrow><msqrt><mrow><mn>10</mn></mrow></msqrt><mo> </mo><mfenced open="(" close=")"><mrow><mrow><mrow><mi>x</mi><mo>-</mo><mn>1000</mn></mrow></mrow></mrow></mfenced></mrow></mrow></mrow><mrow><mn>100</mn></mrow></mfrac></mrow></mrow><mo>)</mo></mrow></mrow></mrow><mrow><mn>2</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac></mrow></mrow></mrow></math></p></div></pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>estimate1 = vpa(cdf(n/2 + 2*sigma) - cdf(n/2 - 2*sigma))</pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeoutput"><pre>estimate1 =&nbsp;<span class="inlineequation"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mn>0.9544997361</mn></mrow></math></span></pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>estimate2 = vpa(cdf(floor(n/2 + 2*sigma) + 1/2) - <span style="color:#0000FF">...</span>
+                cdf(ceil(n/2 - 2*sigma) - 1/2))</pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeoutput"><pre>estimate2 =&nbsp;<span class="inlineequation"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mn>0.9534201342</mn></mrow></math></span></pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>error1 = vpa(estimate1 - withinTwoSigma)</pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeoutput"><pre>error1 =&nbsp;<span class="inlineequation"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mn>0.001052556595</mn></mrow></math></span></pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>error2 = vpa(estimate2 - withinTwoSigma)</pre></div></div></div><div class="code_responsive"><div class="programlisting"><div class="codeoutput"><pre>error2 =&nbsp;<span class="inlineequation"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mrow><mrow><mo>-</mo><mn>0.00002704525904</mn></mrow></mrow></mrow></math></span></pre></div></div></div><p>Restore the default precision for floating-point computations.</p><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>digits(previous_digits);</pre></div></div></div><p>Plot this distribution for k within the <span class="inlineequation"><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:mwmmlx="https://www.mathworks.com/namespace/MathMLextensions" mwmmlx:extension="true" display="block"><mrow><mn>2</mn><mi>σ</mi></mrow></math></span>-interval. The plot is a Gaussian curve.</p><div class="code_responsive"><div class="programlisting"><div class="codeinput"><pre>k = n/2 + (-2*sigma:2*sigma);
+plot(k, P(n,k), <span style="color:#A020F0">'-+'</span>);
+title(<span style="color:#A020F0">'2000 coin tosses'</span>);
+xlabel(<span style="color:#A020F0">'Number of heads'</span>);
+ylabel(<span style="color:#A020F0">'Probability'</span>);</pre></div></div></div><div class="informalfigure"><div id="d126e15231" class="mediaobject"><p><img src="../examples/symbolic/win64/BinomialCoefficientExample_02.png" width="583"></p></div></div><div class="procedure"></div></section>
+    </div></section><div xmlns="http://www.w3.org/1999/xhtml" class="clearfix"></div>
+<div xmlns="http://www.w3.org/1999/xhtml" align="center" class="feedbackblock" id="mw_docsurvey"><script src="/help/docsurvey/docfeedback.js?202403071441"></script>
+<script>loadSurveyHidden();</script>
+<link rel="stylesheet" href="/help/docsurvey/release/index-css.css" type="text/css">
+<script src="/help/docsurvey/release/bundle.index.js?202403071441"></script>
+
+<script>initDocSurvey();</script></div>
+<div class="modal fade" id="matlab-command-dialog" tabindex="-1" role="dialog" aria-labelledby="matlabCommandDialogLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">MATLAB Command</h2>
+      </div>
+      <div class="modal-body" id="dialog-body">
+        <p>You clicked a link that corresponds to this MATLAB command: </p>
+        <pre id="dialog-matlab-command"></pre>
+        <p>Run the command by entering it in the MATLAB Command Window.
+        Web browsers do not support MATLAB commands.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn_secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+<div id="location_content" style="display:none;"></div>
+
+
+<div class="modal fade" id="country-unselected" tabindex="-1" role="dialog" aria-labelledby="country-unselected-title" translate="no">
+<div id="country-select-container">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <img alt="MathWorks" src="/images/responsive/global/pic-header-mathworks-logo2.svg" style="width:167px; height:auto;">
+      </div>
+      <div class="modal-body">
+        <div class="row add_margin_40">
+          <div class="col-xs-12">
+            <p class="h1 icon-globe icon_color_secondary" id="country-unselected-title">Select a Web Site</p>
+            <p>Choose a web site to get translated content where available and see local events and offers. Based on your location, we recommend that you select: <strong class="recommended-country"></strong>.</p>
+						<div class="default-recommendation">
+							<a href="#" id="recommended_domain_button"
+								class="btn btn_color_blue containsResourceName resourceClass-button"><span
+								class="recommended-country"></span></a>
+						</div>
+						<div class="ch-recommendation" style="display:none;">
+							<ul class="list-inline">
+								<li class="add_display_block_xs add_margin_10_xs"><a href="https://ch.mathworks.com" class="recommendation-button btn btn_color_blue btn-md add_display_block_xs" data-subdomain="ch" data-lang="en" data-recommended-text="Switzerland" data-default-lang="true" data-do-not-rewrite="true" x-cq-linkchecker="skip">Switzerland (English)</a></li>
+								<li class="add_display_block_xs add_margin_10_xs"><a href="https://ch.mathworks.com" class="recommendation-button btn companion_btn btn-md add_display_block_xs" data-subdomain="ch" data-lang="de" data-recommended-text="Schweiz" data-do-not-rewrite="true" x-cq-linkchecker="skip">Switzerland (Deutsch)</a></li>
+								<li class="add_display_block_xs"><a href="https://ch.mathworks.com" class="recommendation-button btn companion_btn btn-md add_display_block_xs" data-subdomain="ch" data-lang="fr" data-recommended-text="Suisse" data-do-not-rewrite="true" x-cq-linkchecker="skip">Switzerland (Français)</a></li>
+							</ul>
+						</div>
+						<div class="zh-recommendation" style="display:none;">
+							<ul class="list-inline">
+								<li class="add_display_block_xs add_margin_10_xs"><a href="https://ww2.mathworks.cn" class="recommendation-button btn btn_color_blue btn-md add_display_block_xs" data-subdomain="ww2" data-lang="zh" data-recommended-text="中国" data-default-lang="true" data-do-not-rewrite="true" x-cq-linkchecker="skip">中国 (简体中文)</a></li>
+								<li class="add_display_block_xs"><a href="https://ww2.mathworks.cn" class="recommendation-button btn companion_btn btn-md add_display_block_xs" data-subdomain="ww2" data-lang="en" data-recommended-text="China" data-do-not-rewrite="true" x-cq-linkchecker="skip">中国 (English)</a></li>
+							</ul>
+						</div>
+          </div>
+        </div>
+        <p>You can also select a web site from the following list:</p>
+				<div class="alert alert-warning" id="china_performance_alert" style="display:none;"> <span class="alert_icon icon-alert-warning"></span>
+					<h2>How to Get Best Site Performance</h2>
+					<p>Select the China site (in Chinese or English) for best site performance. Other MathWorks country sites are not optimized for visits from your location.</p>
+				</div>
+        <div class="row add_margin_30">
+          <div class="col-sm-4 col-md-3">
+            <h3 class="add_bottom_rule">Americas</h3>
+            <ul class="list-unstyled">
+              <li><a href="https://la.mathworks.com" class="domain_selector_link" data-country-code="LA" data-subdomain="la" data-lang="es" data-default-lang="true" data-selected-text="América Latina" data-recommended-text="América Latina" data-do-not-rewrite="true">Am&eacute;rica Latina</a> (Español)</li>
+              <li><a href="https://www.mathworks.com" class="domain_selector_link" data-country-code="CA" data-subdomain="www" data-lang="en" data-do-not-rewrite="true">Canada</a> (English)</li>
+              <li><a href="https://www.mathworks.com" class="domain_selector_link" data-country-code="US" data-subdomain="www" data-lang="en" data-default-lang="true" data-selected-text="United States" data-recommended-text="United States" data-do-not-rewrite="true">United States</a> (English)</li>
+            </ul>
+          </div>
+          <div class="col-sm-4 col-md-6">
+            <h3 class="add_bottom_rule">Europe</h3>
+            <div class="row">
+              <div class="col-xs-6 col-sm-12 col-md-6">
+                <ul class="list-unstyled add_margin_0_sm">
+                  <li><a href="https://nl.mathworks.com" class="domain_selector_link" data-country-code="BE" data-subdomain="nl" data-lang="en" data-do-not-rewrite="true">Belgium</a> (English)</li>
+                  <li><a href="https://se.mathworks.com" class="domain_selector_link" data-country-code="DK" data-subdomain="se" data-lang="en" data-do-not-rewrite="true">Denmark</a> (English)</li>
+                  <li><a href="https://de.mathworks.com" class="domain_selector_link" data-country-code="DE" data-subdomain="de" data-lang="de" data-default-lang="true" data-selected-text="Deutschland" data-recommended-text="Deutschland" data-do-not-rewrite="true">Deutschland</a> (Deutsch)</li>
+                  <li><a href="https://es.mathworks.com" class="domain_selector_link" data-country-code="ES" data-subdomain="es" data-lang="es" data-default-lang="true" data-selected-text="España" data-recommended-text="España" data-do-not-rewrite="true">España</a> (Español)</li>
+                  <li><a href="https://se.mathworks.com"  class="domain_selector_link" data-country-code="FI" data-subdomain="se" data-lang="en" data-do-not-rewrite="true">Finland</a> (English)</li>
+                  <li><a href="https://fr.mathworks.com" class="domain_selector_link" data-country-code="FR" data-subdomain="fr" data-lang="fr" data-default-lang="true" data-selected-text="France" data-recommended-text="France" data-do-not-rewrite="true">France</a> (Français)</li>
+                  <li><a href="https://uk.mathworks.com" class="domain_selector_link" data-country-code="IE" data-subdomain="uk" data-lang="en" data-do-not-rewrite="true">Ireland</a> (English)</li>
+                  <li><a href="https://it.mathworks.com" class="domain_selector_link" data-country-code="IT" data-subdomain="it" data-lang="it" data-default-lang="true" data-selected-text="Italia" data-recommended-text="Italia" data-do-not-rewrite="true">Italia</a> (Italiano)</li>
+                  <li><a href="https://nl.mathworks.com" class="domain_selector_link" data-country-code="LU" data-subdomain="nl" data-lang="en" data-do-not-rewrite="true">Luxembourg</a> (English)</li>
+                </ul>
+              </div>
+              <div class="col-xs-6 col-sm-12 col-md-6">
+                <ul class="list-unstyled">
+                  <li><a href="https://nl.mathworks.com" class="domain_selector_link" data-country-code="NL" data-subdomain="nl" data-lang="en" data-default-lang="true" data-selected-text="Benelux" data-recommended-text="Netherlands" data-do-not-rewrite="true">Netherlands</a> (English)</li>
+                  <li><a href="https://se.mathworks.com" class="domain_selector_link" data-country-code="NO" data-subdomain="se" data-lang="en" data-do-not-rewrite="true">Norway</a> (English)</li>
+                  <li><a href="https://de.mathworks.com" class="domain_selector_link" data-country-code="AT" data-subdomain="de" data-lang="de" data-do-not-rewrite="true">Österreich</a> (Deutsch)</li>
+                  <li><a href="https://www.mathworks.com" class="domain_selector_link" data-country-code="PT" data-subdomain="www" data-lang="en" data-do-not-rewrite="true">Portugal</a> (English)</li>
+                  <li><a href="https://se.mathworks.com" class="domain_selector_link" data-country-code="Sweden" data-subdomain="se" data-lang="en" data-default-lang="true" data-selected-text="Nordic" data-recommended-text="Sweden" data-do-not-rewrite="true">Sweden</a> (English)</li>
+                  <li>Switzerland
+                    <ul class="list-unstyled add_indent_20">
+                      <li><a href="https://ch.mathworks.com" class="domain_selector_link" data-country-code="CH" data-subdomain="ch" data-lang="de" data-selected-text="Schweiz" data-recommended-text="Schweiz" data-do-not-rewrite="true">Deutsch</a></li>
+                      <li><a href="https://ch.mathworks.com" id="swiss_english" class="domain_selector_link" data-country-code="CH" data-subdomain="ch" data-lang="en" data-default-lang="true" data-selected-text="Switzerland" data-recommended-text="Switzerland" data-do-not-rewrite="true">English</a></li>
+                      <li><a href="https://ch.mathworks.com" class="domain_selector_link" data-country-code="CH" data-subdomain="ch" data-lang="fr" data-selected-text="Suisse" data-recommended-text="Suisse" data-do-not-rewrite="true">Français</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="https://uk.mathworks.com" class="domain_selector_link" data-country-code="GB" data-subdomain="uk" data-lang="en" data-default-lang="true" data-selected-text="United Kingdom" data-recommended-text="United Kingdom" data-do-not-rewrite="true">United Kingdom</a> (English)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 col-md-3">
+            <h3 class="add_bottom_rule">Asia Pacific</h3>
+            <ul class="list-unstyled">
+              <li><a href="https://au.mathworks.com" class="domain_selector_link" data-country-code="AU" data-subdomain="au" data-lang="en" data-default-lang="true" data-selected-text="Australia" data-recommended-text="Australia" data-do-not-rewrite="true">Australia</a> (English)</li>
+              <li><a href="https://in.mathworks.com" class="domain_selector_link" data-country-code="IN" data-subdomain="in" data-lang="en" data-default-lang="true" data-selected-text="India" data-recommended-text="India" data-do-not-rewrite="true">India</a> (English)</li>
+              <li><a href="https://au.mathworks.com" class="domain_selector_link" data-country-code="NZ" data-subdomain="au" data-lang="en" data-do-not-rewrite="true">New Zealand</a> (English)</li>
+              <li>中国
+                    <ul class="list-unstyled add_indent_20">
+                      <li><a href="https://ww2.mathworks.cn" class="domain_selector_link" data-country-code="CN" data-subdomain="ww2" data-lang="zh" data-default-lang="true" data-selected-text="中国" data-recommended-text="中国" data-do-not-rewrite="true">简体中文</a></li>
+                      <li><a href="https://ww2.mathworks.cn" class="domain_selector_link" data-country-code="CN" data-subdomain="ww2" data-lang="en" data-default-lang="true" data-selected-text="China" data-recommended-text="China" data-do-not-rewrite="true">English</a></li>
+                    </ul>
+               </li>
+              <li><a href="https://jp.mathworks.com" class="domain_selector_link" data-country-code="JP" data-subdomain="jp" data-lang="ja" data-default-lang="true" data-selected-text="日本" data-recommended-text="日本" data-do-not-rewrite="true">日本</a> (日本語)</li>
+              <li><a href="https://kr.mathworks.com" class="domain_selector_link" data-country-code="KR" data-subdomain="kr" data-lang="ko" data-default-lang="true" data-selected-text="한국" data-recommended-text="한국" data-do-not-rewrite="true">한국</a> (한국어)</li>
+            </ul>
+          </div>
+        </div>
+        <p class="text-center"><a href="#" class="worldwide_link">Contact your local office</a></p>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+  
+
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOBILE CTA - Begin -->
+      <div class="cta_container_mobile visible-sm visible-xs">
+        <div class="container-fluid">      
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="cta_box">
+<ul class="list-inline">
+<li class="cta_item cta_item_general hidden-sm hidden-xs "><a href="/campaigns/products/trials.html?prodcode=SM&amp;s_tid=doc_trial_SM_tb" class="icon-download">Trial Software</a></li>
+<li class="hidden-lg hidden-md "><a href="/campaigns/products/trials.html?prodcode=SM&amp;s_tid=doc_trial_SM_tb" class="btn btn_color_blue btn-block"><span class="icon-download"></span> Trial Software</a></li>
+<li class="cta_item cta_item_general hidden-sm hidden-xs "><a href="/support/web_downloads_bounce.html?s_tid=hc_prod_update&s_cid=1008_degr_docdn_270055" class="icon-download">Product Updates</a></li>
+<li class="hidden-lg hidden-md "><a href="/support/web_downloads_bounce.html?s_tid=hc_prod_update&s_cid=1008_degr_docdn_270055" class="btn btn_color_blue btn-block"><span class="icon-download"></span> Product Updates</a></li>
+</ul>
+</div> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- MOBILE CTA - End -->
+
+
+      <footer id="footer" class="bs-footer">
+        <div class="container-fluid">
+         <div class="footer" translate="no">
+<div class="row">
+<div class="col-xs-12 col-md-9">
+<ul class="countrynav" id="countrynav">
+<li class="footernav_country">
+<a href="#" data-toggle="modal" data-target="#country-unselected">
+<span class="icon-globe icon_color_quinary icon_16"></span>United States
+</a>
+</li>
+</ul>
+<div class="clearfix"></div>
+<ul class="footernav">
+<li class="footernav_patents"><a href="https://www.mathworks.com/company/aboutus/policies_statements/trust-center.html?s_tid=gf_tc">Trust Center</a></li>
+<li class="footernav_trademarks"><a href="https://www.mathworks.com/company/aboutus/policies_statements/trademarks.html?s_tid=gf_trd">Trademarks</a></li>
+<li class="footernav_privacy"><a href="https://www.mathworks.com/company/aboutus/policies_statements.html?s_tid=gf_priv">Privacy Policy</a></li>
+<li class="footernav_piracy"><a href="https://www.mathworks.com/company/aboutus/policies_statements/piracy.html?s_tid=gf_pir">Preventing Piracy</a></li>
+<li class="footernav_status"><a href="https://status.mathworks.com/?s_tid=gf_application">Application Status</a></li>
+</ul>
+<div class="clearfix"></div>
+<div class="clearfix"></div>
+<p class="copyright" translate="no">&copy; 1994-2024 The MathWorks, Inc.</p>
+</div>
+<div class="clearfix visible-sm add_margin_10"></div>
+<div class="col-xs-12 col-md-3">
+<div class="social_media">
+<ul class="social_media_icons">
+<li>
+<a href="https://www.facebook.com/MATLAB" target="_blank" rel="nofollow noopener noreferrer" class="svg_link">
+<img src="/images/responsive/global/ico-facebook.svg" alt="Facebook" class="ico_facebook">
+</a>
+</li>
+<li>
+<a href="https://twitter.com/MATLAB" target="_blank" rel="nofollow noopener noreferrer" class="svg_link">
+<img src="/images/responsive/global/ico-x.svg" alt="X" class="ico_twitter">
+</a>
+</li>
+<li>
+<a href="https://www.instagram.com/matlab/" class="svg_link" target="_blank" rel="nofollow noopener noreferrer">
+<img class="ico_instagram" alt="Instagram" src="/etc.clientlibs/mathworks/clientlibs/customer-ui/templates/common/resources/images/ico-instagram.svg">
+</a>
+</li>
+<li>
+<a href="https://www.youtube.com/user/MATLAB" class="svg_link" target="_blank" rel="nofollow noopener noreferrer">
+<img class="ico_youtube" alt="YouTube" src="/images/responsive/global/ico-youtube.svg">
+</a>
+</li>
+<li>
+<a href="https://www.linkedin.com/company/the-mathworks_2" target="_blank" rel="nofollow noopener noreferrer" class="svg_link">
+<img src="/images/responsive/global/ico-linkedin.svg" alt="LinkedIn" class="ico_linkedin">
+</a>
+</li>
+<li>
+<a href="https://www.mathworks.com/company/rss.html" class="svg_link">
+<img src="/images/responsive/global/ico-rss.svg" alt="RSS" class="ico_rss">
+</a>
+</li>
+</ul>
+<div class="clearfix"></div>
+<p><em>Join the conversation</em></p>
+</div>
+</div>
+</div>
+</div>
+        </div>
+      </footer>
+
+    </div>
+  
+  </div>
+
+
+<!-- CRUX 2.0 -->
+<script src="/includes_content/responsive/scripts/crux_nav_truncate.js?202403"></script>
+
+<!-- Mirror Search Queries on Scope Change : g2611494 -->
+<script>
+$('#search_scope_support').on('show.bs.collapse', function () {
+  if ($('#search_scope_site #query').val()) {
+    var site_search_value = $('#search_scope_site #query').val();
+    $('#search_scope_support #docsearch').val(site_search_value); 
+  }
+})
+$('#search_scope_site').on('show.bs.collapse', function () {
+  if ($('#search_scope_support #docsearch').val()) {
+    var support_search_value = $('#search_scope_support #docsearch').val();
+    $('#search_scope_site #query').val(support_search_value); 
+  }  
+})
+</script>
+<noscript><img src="https://www.mathworks.com/akam/13/pixel_553331a5?a=dD1kZTk2MTFjNWI3OWJhN2U3YjQ5NjQxNDhhZmVhNGMyMTk0MmNhYWUxJmpzPW9mZg==" style="visibility: hidden; position: absolute; left: -999px; top: -999px;" /></noscript><script type="text/javascript" nonce="881645b09cf7798b84fd48c3917df23d" src="/IJARNdYr5qq31a-KXZCe4E9T/iDk5fNtXpDEmYO/OWQXGX0/BAtf/KwwFAUo"></script></body>
+</html>
