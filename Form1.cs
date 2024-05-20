@@ -736,8 +736,10 @@ namespace image_processing_form
             }
             else
             {
+                ImgProcess.CalculteHistogram(histGraph, ref image);
                 histGraph.Visible = true;
                 isHistogramVisible = true;
+
             }
         }
 
